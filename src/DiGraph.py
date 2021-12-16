@@ -1,4 +1,7 @@
+from Edge import Edge
 from GraphInterface import GraphInterface
+from Node import Node
+from Location import Location
 
 
 class DiGraph(GraphInterface):
@@ -10,15 +13,6 @@ class DiGraph(GraphInterface):
         self.edgesMap = {}
         self.nodesMap = {}
 
-    # def __int__(self, src, dest, weight):
-    #     self.src = src
-    #     self.dest = dest
-    #     self.weight = weight
-    #
-    # def __int__(self, node_id, pos: tuple):
-    #     self.node_id = node_id
-    #     self.pos = pos
-
     def v_size(self) -> int:
         return self.vertex
 
@@ -29,15 +23,35 @@ class DiGraph(GraphInterface):
         return self.mc
 
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
-        edge = self.edge(id1, id2, weight)
-        self.edgesMap['src'] = {}
-        self.edges += 1
+        e = Edge(id1, id2, weight)
+        if self.edgesMap.__contains__(id1):
+            tempHas = self.edgesMap[id1]
+            tempHas[id2] = e
+            self.edgesMap[id1] = tempHas
+            self.edges += 1
+            self.mc += 1
+            return True
+        else:
+            return False
 
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
-        Node = node(node_id, pos)
+        node = Node(node_id, pos)
+        if self.nodesMap.__contains__(node_id):
+            self.nodesMap[node_id] = node
+            self.mc += 1
+            self.vertex += 1
+            return True
+        else:
+            return False
 
     def remove_node(self, node_id: int) -> bool:
-        pass
+        if self.nodesMap.__contains__(node_id):
+            self.nodesMap.pop(node_id)
+            self.vertex -= 1
+            self.mc += 1
+            return True
+        else:
+            return False
 
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
         pass
@@ -53,10 +67,16 @@ class DiGraph(GraphInterface):
 
 
 if __name__ == '__main__':
-    my = dict() #//1->3
+    my = dict()  # //1->3
     temp = dict()
-    edge = DiGraph(1,3,5)
+    edge = DiGraph(1, 3, 5)
     temp[3] = edge
-    #my['two'] = '2'
-    my[1] = temp
-    print(my)
+    temp[2] =1
+    print(temp)
+    temp.pop(3)
+    print(temp)
+    # my['two'] = '2'
+    # my[1] = temp
+    # print(my)
+    # if my.__contains__(3):
+    #     print(my[2])
