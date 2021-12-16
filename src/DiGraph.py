@@ -25,12 +25,15 @@ class DiGraph(GraphInterface):
 
     def all_in_edges_of_node(self, id1: int) -> dict:
         nodes = dict()
-        ans = dict()
-        for dest in self.edgesMap[id1]:
-            nodes[dest.src] =
+        for e in self.reversEdges[id1]:
+            nodes[e.dest] = e.weight
+        return nodes
 
     def all_out_edges_of_node(self, id1: int) -> dict:
-        pass
+        nodes = dict()
+        nodeEdges = self.edgesMap[id1]
+        for e in nodeEdges:
+            nodes[e.dest] = e.weight
 
     def get_mc(self) -> int:
         return self.mc
@@ -65,7 +68,14 @@ class DiGraph(GraphInterface):
             self.nodesMap.pop(node_id)
             if self.edgesMap.__contains__(node_id):
                 self.edgeSize = self.edgeSize - len(self.edgesMap.get(node_id))
-                self.edgesMap.pop(node_id)
+                Dict = self.edgesMap.pop(node_id)
+                for e in Dict:
+                    self.reversEdges.pop(e.src)
+            if self.reversEdges.__contains__(node_id):
+                self.edgeSize = self.edgeSize - len((self.reversEdges.get(node_id)))
+                Dict = self.reversEdges.pop(node_id)
+                for e in Dict:
+                    self.edgesMap.pop(e.dest)
             self.vertexSize -= 1
             self.mc += 1
 
@@ -74,7 +84,12 @@ class DiGraph(GraphInterface):
             return False
 
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
-        pass
+        tempMap = self.edgesMap.get(node_id1)
+        tempMap.pop(node_id2)
+        reversedTempMap = self.reversEdges.get(node_id1)
+        reversedTempMap.pop(node_id1)
+        self.edgeSize -= 1
+        self.mc += 1
 
 
 if __name__ == '__main__':
@@ -82,7 +97,9 @@ if __name__ == '__main__':
     temp = dict()
     edge = DiGraph(1, 3, 5)
     temp[3] = edge
-
+    temp.pop(3)
+    if temp[3]!=None:
+        print(temp[3])
     # print(temp)
     # temp.pop(3)
     # print(temp)
@@ -90,4 +107,4 @@ if __name__ == '__main__':
     my['two'] = '2'
     my[1] = temp
     keys = my.keys()
-    print(len(keys))
+   # print(len(keys))
