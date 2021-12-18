@@ -1,4 +1,4 @@
-from Loaction import Location
+from Location import Location
 
 
 class Node:
