@@ -5,10 +5,10 @@ from Node import Node
 
 class DiGraph(GraphInterface):
 
-    def __init__(self, vertex, edges, mc):
-        self.vertexSize = vertex
-        self.edgeSize = edges
-        self.mc = mc
+    def __init__(self):
+        self.vertexSize = 0
+        self.edgeSize = 0
+        self.mc = 0
         self.edgesMap = dict()
         self.reversEdges = dict()
         self.nodesMap = dict()
@@ -24,14 +24,15 @@ class DiGraph(GraphInterface):
 
     def all_in_edges_of_node(self, id1: int) -> dict:
         nodes = dict()
-        for e in self.reversEdges[id1]:
+        temp1 = self.reversEdges[id1]
+        for e in temp1.values():
             nodes[e.dest] = e.weight
         return nodes
 
     def all_out_edges_of_node(self, id1: int) -> dict:
         nodes = dict()
         nodeEdges = self.edgesMap[id1]
-        for e in nodeEdges:
+        for e in nodeEdges.values():
             nodes[e.dest] = e.weight
 
     def get_mc(self) -> int:
@@ -39,7 +40,18 @@ class DiGraph(GraphInterface):
 
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
         e = Edge(id1, id2, weight)
-        if self.edgesMap.__contains__(id1):
+        destMap = self.edgesMap.get(id1)
+        if destMap is None:
+            destMap = dict()
+            destMap[id2] = e
+            self.edgesMap[id1] = destMap
+            reversTemp = dict()
+            reversTemp[id1] = e
+            self.reversEdges[id2] = reversTemp
+            self.edgeSize += 1
+            self.mc += 1
+            return True
+        elif not destMap.__contains__(id2):
             tempHas = self.edgesMap[id1]
             tempHas[id2] = e
             self.edgesMap[id1] = tempHas
@@ -87,8 +99,10 @@ class DiGraph(GraphInterface):
         tempMap = self.edgesMap.get(node_id1)
         if tempMap is not None:
             tempMap.pop(node_id2)
-            reversedTempMap = self.reversEdges.get(node_id1)
+            self.edgesMap[node_id1] = tempMap
+            reversedTempMap = self.reversEdges.get(node_id2)
             reversedTempMap.pop(node_id1)
+            self.reversEdges[node_id2] = reversedTempMap
             self.edgeSize -= 1
             self.mc += 1
             return True
