@@ -6,6 +6,7 @@ from Location import Location
 
 class DiGraph(GraphInterface):
 
+    """Constructor"""
     def __init__(self, vertex, edges, mc):
         self.vertexSize = vertex
         self.edgeSize = edges
