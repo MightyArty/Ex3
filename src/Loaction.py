@@ -10,4 +10,5 @@ class Location:
         self.z = z
 
     def distance(self, point):
-        return sqrt(pow(self.x - point.x, 2) + pow(self.y - point.y, 2) + pow(self.z - point.z, 2))
+        ans = sqrt(pow(self.x - point.x, 2) + pow(self.y - point.y, 2) + pow(self.z - point.z, 2))
+        return ans
