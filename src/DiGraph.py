@@ -1,7 +1,6 @@
 from Edge import Edge
 from GraphInterface import GraphInterface
 from Node import Node
-from Location import Location
 
 
 class DiGraph(GraphInterface):
@@ -66,30 +65,35 @@ class DiGraph(GraphInterface):
     def remove_node(self, node_id: int) -> bool:
         if self.nodesMap.__contains__(node_id):
             self.nodesMap.pop(node_id)
+            self.mc += 1
+            self.vertexSize -= 1
             if self.edgesMap.__contains__(node_id):
                 self.edgeSize = self.edgeSize - len(self.edgesMap.get(node_id))
+                self.mc += len(self.edgesMap.get(node_id))
                 Dict = self.edgesMap.pop(node_id)
                 for e in Dict:
                     self.reversEdges.pop(e.src)
             if self.reversEdges.__contains__(node_id):
                 self.edgeSize = self.edgeSize - len((self.reversEdges.get(node_id)))
+                self.mc += len((self.reversEdges.get(node_id)))
                 Dict = self.reversEdges.pop(node_id)
                 for e in Dict:
                     self.edgesMap.pop(e.dest)
-            self.vertexSize -= 1
-            self.mc += 1
-
             return True
         else:
             return False
 
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
         tempMap = self.edgesMap.get(node_id1)
-        tempMap.pop(node_id2)
-        reversedTempMap = self.reversEdges.get(node_id1)
-        reversedTempMap.pop(node_id1)
-        self.edgeSize -= 1
-        self.mc += 1
+        if tempMap is not None:
+            tempMap.pop(node_id2)
+            reversedTempMap = self.reversEdges.get(node_id1)
+            reversedTempMap.pop(node_id1)
+            self.edgeSize -= 1
+            self.mc += 1
+            return True
+        else:
+            return False
 
 
 if __name__ == '__main__':
@@ -97,9 +101,10 @@ if __name__ == '__main__':
     temp = dict()
     edge = DiGraph(1, 3, 5)
     temp[3] = edge
-    temp.pop(3)
-    if temp[3]!=None:
-        print(temp[3])
+
+    if temp.__contains__(3):
+        print(temp.get(3))
+
     # print(temp)
     # temp.pop(3)
     # print(temp)
@@ -107,4 +112,4 @@ if __name__ == '__main__':
     my['two'] = '2'
     my[1] = temp
     keys = my.keys()
-   # print(len(keys))
+# print(len(keys))
