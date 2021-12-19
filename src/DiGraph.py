@@ -1,16 +1,14 @@
 from Edge import Edge
 from GraphInterface import GraphInterface
 from Node import Node
-from Location import Location
 
 
 class DiGraph(GraphInterface):
 
-    """Constructor"""
-    def __init__(self, vertex, edges, mc):
-        self.vertexSize = vertex
-        self.edgeSize = edges
-        self.mc = mc
+    def __init__(self):
+        self.vertexSize = 0
+        self.edgeSize = 0
+        self.mc = 0
         self.edgesMap = dict()
         self.reversEdges = dict()
         self.nodesMap = dict()
@@ -26,22 +24,35 @@ class DiGraph(GraphInterface):
 
     def all_in_edges_of_node(self, id1: int) -> dict:
         nodes = dict()
-        for e in self.reversEdges[id1]:
-            nodes[e.dest] = e.weight
+        temp1 = self.reversEdges[id1]
+        for e in temp1.values():
+            nodes[e.src] = e.weight
         return nodes
 
     def all_out_edges_of_node(self, id1: int) -> dict:
         nodes = dict()
         nodeEdges = self.edgesMap[id1]
-        for e in nodeEdges:
+        for e in nodeEdges.values():
             nodes[e.dest] = e.weight
+        return nodes
 
     def get_mc(self) -> int:
         return self.mc
 
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
         e = Edge(id1, id2, weight)
-        if self.edgesMap.__contains__(id1):
+        destMap = self.edgesMap.get(id1)
+        if destMap is None:
+            destMap = dict()
+            destMap[id2] = e
+            self.edgesMap[id1] = destMap
+            reversTemp = dict()
+            reversTemp[id1] = e
+            self.reversEdges[id2] = reversTemp
+            self.edgeSize += 1
+            self.mc += 1
+            return True
+        elif not destMap.__contains__(id2):
             tempHas = self.edgesMap[id1]
             tempHas[id2] = e
             self.edgesMap[id1] = tempHas
@@ -56,7 +67,7 @@ class DiGraph(GraphInterface):
 
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
         node = Node(node_id, pos)
-        if self.nodesMap.__contains__(node_id):
+        if not self.nodesMap.__contains__(node_id):
             self.nodesMap[node_id] = node
             self.mc += 1
             self.vertexSize += 1
@@ -67,30 +78,37 @@ class DiGraph(GraphInterface):
     def remove_node(self, node_id: int) -> bool:
         if self.nodesMap.__contains__(node_id):
             self.nodesMap.pop(node_id)
+            self.mc += 1
+            self.vertexSize -= 1
             if self.edgesMap.__contains__(node_id):
                 self.edgeSize = self.edgeSize - len(self.edgesMap.get(node_id))
+                self.mc += len(self.edgesMap.get(node_id))
                 Dict = self.edgesMap.pop(node_id)
                 for e in Dict:
                     self.reversEdges.pop(e.src)
             if self.reversEdges.__contains__(node_id):
                 self.edgeSize = self.edgeSize - len((self.reversEdges.get(node_id)))
+                self.mc += len((self.reversEdges.get(node_id)))
                 Dict = self.reversEdges.pop(node_id)
                 for e in Dict:
                     self.edgesMap.pop(e.dest)
-            self.vertexSize -= 1
-            self.mc += 1
-
             return True
         else:
             return False
 
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
         tempMap = self.edgesMap.get(node_id1)
-        tempMap.pop(node_id2)
-        reversedTempMap = self.reversEdges.get(node_id1)
-        reversedTempMap.pop(node_id1)
-        self.edgeSize -= 1
-        self.mc += 1
+        if tempMap is not None:
+            tempMap.pop(node_id2)
+            self.edgesMap[node_id1] = tempMap
+            reversedTempMap = self.reversEdges.get(node_id2)
+            reversedTempMap.pop(node_id1)
+            self.reversEdges[node_id2] = reversedTempMap
+            self.edgeSize -= 1
+            self.mc += 1
+            return True
+        else:
+            return False
 
 
 if __name__ == '__main__':
@@ -98,9 +116,10 @@ if __name__ == '__main__':
     temp = dict()
     edge = DiGraph(1, 3, 5)
     temp[3] = edge
-    temp.pop(3)
-    if temp[3]!=None:
-        print(temp[3])
+
+    if temp.__contains__(3):
+        print(temp.get(3))
+
     # print(temp)
     # temp.pop(3)
     # print(temp)
@@ -108,4 +127,4 @@ if __name__ == '__main__':
     my['two'] = '2'
     my[1] = temp
     keys = my.keys()
-   # print(len(keys))
+# print(len(keys))
