@@ -26,7 +26,7 @@ class DiGraph(GraphInterface):
         nodes = dict()
         temp1 = self.reversEdges[id1]
         for e in temp1.values():
-            nodes[e.dest] = e.weight
+            nodes[e.src] = e.weight
         return nodes
 
     def all_out_edges_of_node(self, id1: int) -> dict:
@@ -34,6 +34,7 @@ class DiGraph(GraphInterface):
         nodeEdges = self.edgesMap[id1]
         for e in nodeEdges.values():
             nodes[e.dest] = e.weight
+        return nodes
 
     def get_mc(self) -> int:
         return self.mc
@@ -66,7 +67,7 @@ class DiGraph(GraphInterface):
 
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
         node = Node(node_id, pos)
-        if self.nodesMap.__contains__(node_id):
+        if not self.nodesMap.__contains__(node_id):
             self.nodesMap[node_id] = node
             self.mc += 1
             self.vertexSize += 1
