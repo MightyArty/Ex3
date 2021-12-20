@@ -104,7 +104,8 @@ class GraphAlgo(GraphAlgoInterface):
                         matrix[i][j] = matrix[i][k] + matrix[k][j]
         ans = dict()
         min = float('inf')
-
+        id = -1
+        minMax = -1
         for i in range(size):
             max = -1
             for j in range(size):
@@ -114,7 +115,10 @@ class GraphAlgo(GraphAlgoInterface):
                 return float('inf')
             elif min > max:
                 min = max
-                ans[0] = min
+        if minMax < min:
+            id = i
+            tempMax = min
+        ans[id] = tempMax
         return ans
 
     def plot_graph(self) -> None:
