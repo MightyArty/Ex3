@@ -1,14 +1,21 @@
 import json
+from queue import Queue
 from typing import List
 
 from GraphAlgoInterface import GraphAlgoInterface
 from DiGraph import DiGraph
+from DiGraph import GraphInterface
 
 
 class GraphAlgo(GraphAlgoInterface):
+    def get_graph(self) -> GraphInterface:
+        """
+        :return: the directed graph on which the algorithm works on.
+        """
+        pass
 
-    def __init__(self, graph=DiGraph):
-        self.graph = graph
+    def __init__(self, g=DiGraph()):
+        self.graph = g
 
     def load_from_json(self, file_name: str) -> bool:
         try:
@@ -27,17 +34,88 @@ class GraphAlgo(GraphAlgoInterface):
             return False
 
     def save_to_json(self, file_name: str) -> bool:
-        try:
-
+        pass
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
-        pass
+        ans = dict()
+        if self.graph.nodesMap[id1] is None or self.graph.nodesMap[id2] is None or self.graph is None:
+            ans[float('inf')] = []
+            return ans
+        if id1 == id2:
+            ans[0] = [id1]
+            return ans
+        tempGraph = self.graph
+        curr = tempGraph.nodesMap[id1]
+        curr.weight = 0
+        ans[id1] = curr
+        for n in tempGraph.nodesMap.values():
+            tempNode = n
+            if tempNode.id != id1:
+                tempGraph.nodesMap[tempNode.id].weight = float('inf')  # set the weight
+                tempGraph.nodesMap[tempNode.id].info = "Not Visited"
+                tempGraph.nodesMap[tempNode.id].tag = -1
+        curr.info = "Not Visited"
+        pq = [curr]
+        while len(pq) != 0:
+            edges = tempGraph.all_out_edges_of_node(curr.id)
+            for destination in edges.values():
+                if curr.id != destination:
+                    # need to fix it
+                    sumWeight = 10 + tempGraph.nodesMap[destination].weight
+                    if tempGraph.nodesMap[destination].weight > sumWeight:
+                        tempGraph.nodesMap[destination].weight = sumWeight
+                        tempGraph.nodesMap[destination].tag = curr.id
+                        ans[destination] = curr.id
+                tempNode = tempGraph.nodesMap[destination]
+                if tempNode.info != "Visited":
+                    pq.append(tempGraph.nodesMap[destination])
+            if pq[0] is not None:
+                tempGraph.nodesMap[pq[0]].info = "Visited"
+                pq.pop(0)
+                curr = pq[0]
+        minWeight = tempGraph.nodesMap[id2].weight
+        return minWeight
 
     def TSP(self, node_lst: List[int]) -> (List[int], float):
         pass
 
     def centerPoint(self) -> (int, float):
-        pass
+        size = len(self.graph.nodesMap)
+        matrix = []
+        for i in range(size):
+            a = []
+            for j in range(size):
+                if i == j:
+                    a.append(0)
+                else:
+                    a.append(float('inf'))
+            matrix.append(a)
+        for i in range(size):
+            keys = self.graph.all_out_edges_of_node(i).keys()
+            for j in range(size):
+                if keys.__contains__(j):
+                    Edge = self.graph.edgesMap[i]
+                    matrix[i][j] = Edge[j].weight
+
+        for k in range(size):
+            for i in range(size):
+                for j in range(size):
+                    if matrix[i][j] > matrix[i][k] + matrix[k][j]:
+                        matrix[i][j] = matrix[i][k] + matrix[k][j]
+        ans = dict()
+        min = float('inf')
+
+        for i in range(size):
+            max = -1
+            for j in range(size):
+                if matrix[i][j] > max:
+                    max = matrix[i][j]
+            if max == float('inf'):
+                return float('inf')
+            elif min > max:
+                min = max
+                ans[0] = min
+        return ans
 
     def plot_graph(self) -> None:
         pass

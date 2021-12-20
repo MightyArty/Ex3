@@ -1,6 +1,7 @@
 from Edge import Edge
 from GraphInterface import GraphInterface
 from Node import Node
+import numpy as np
 
 
 class DiGraph(GraphInterface):
@@ -114,7 +115,7 @@ class DiGraph(GraphInterface):
 if __name__ == '__main__':
     my = dict()  # //1->3
     temp = dict()
-    edge = DiGraph(1, 3, 5)
+    edge = DiGraph()
     temp[3] = edge
 
     if temp.__contains__(3):
@@ -128,3 +129,20 @@ if __name__ == '__main__':
     my[1] = temp
     keys = my.keys()
 # print(len(keys))
+a = [55]
+a.append(1)
+a.append(2)
+m = []
+# for i in range(10):
+#     a = []
+#     for j in range(10):
+#         if i == j:
+#             a.append(0)
+#         else:
+#             a.append(1)
+#     m.append(a)
+#
+# for i in range(10):
+#     for j in range(10):
+#         print(m[i][j], end=" ")
+#     print()

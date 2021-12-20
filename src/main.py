@@ -1,5 +1,6 @@
 from DiGraph import DiGraph
-#from GraphAlgo import GraphAlgo
+
+from src.GraphAlgo import GraphAlgo
 
 
 def check():
@@ -19,8 +20,10 @@ def check():
     ([1,3,4,2],3.5)
     """
     check0()
+
+
 #    check1()
- #   check2()
+#   check2()
 
 
 def check0():
@@ -42,6 +45,7 @@ def check0():
     print(g.get_all_v())  # prints a dict with all the graph's vertices.
     print(g.all_in_edges_of_node(1))
     print(g.all_out_edges_of_node(1))
+
     # g_algo = GraphAlgo(g)
     # print(g_algo.shortest_path(0, 3))
     # g_algo.plot_graph()
@@ -83,26 +87,29 @@ def check0():
 #     g_algo.plot_graph()
 #
 #
-# def check3():
-#     """ This function tests the naming, basic testing over A5 json file.
-#       :return:
-#       """
-#     g = DiGraph()  # creates an empty directed graph
-#     for n in range(5):
-#         g.add_node(n)
-#     g.add_edge(0, 1, 1)
-#     g.add_edge(0, 4, 5)
-#     g.add_edge(1, 0, 1.1)
-#     g.add_edge(1, 2, 1.3)
-#     g.add_edge(1, 3, 1.9)
-#     g.add_edge(2, 3, 1.1)
-#     g.add_edge(3, 4, 2.1)
-#     g.add_edge(4, 2, .5)
-#     g_algo = GraphAlgo(g)
-#     print(g_algo.centerPoint())
+def check3():
+    """ This function tests the naming, basic testing over A5 json file.
+      :return:
+      """
+    g = DiGraph()  # creates an empty directed graph
+    for n in range(5):
+        g.add_node(n)
+    g.add_edge(0, 1, 1)
+    g.add_edge(0, 4, 5)
+    g.add_edge(1, 0, 1.1)
+    g.add_edge(1, 2, 1.3)
+    g.add_edge(1, 3, 1.9)
+    g.add_edge(2, 3, 1.1)
+    g.add_edge(3, 4, 2.1)
+    g.add_edge(4, 2, .5)
+    g.add_edge(4, 1, 4)
+    g_algo = GraphAlgo(g)
+    print(g_algo.centerPoint())
+
+
 #     print(g_algo.TSP([1, 2, 4]))
 #     g_algo.plot_graph()
 
 
 if __name__ == '__main__':
-    check0()
+    check3()
