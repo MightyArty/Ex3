@@ -3,6 +3,11 @@ from Location import Location
 
 class Node:
 
-    def __init__(self, id, location):
-        self.id = id
-        self.location = location
+    def __init__(self, key, loc):
+        self.id = key
+        self.location = loc
+        self.tag = 0
+        self.info = ""
+        self.weight = 0
+
+
