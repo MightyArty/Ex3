@@ -77,7 +77,7 @@ class DiGraph(GraphInterface):
 
     def remove_node(self, node_id: int) -> bool:
         if self.nodesMap.__contains__(node_id):
-            self.nodesMap.pop(node_id)
+            # self.nodesMap.pop(node_id)
             self.mc += 1
             self.vertexSize -= 1
             if self.edgesMap.__contains__(node_id):
