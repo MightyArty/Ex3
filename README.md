@@ -6,3 +6,8 @@ DiGraph class,GraphAlgo class and comparisons between this assignment (using Pyt
 
 # Part I - DiGraph class (implements GraphInterface):
  This class implements GraphInterface 
+MORE DATA WILL PROVIDED
+
+# Part II - GraphAlgo class (implements GraphAlgoInterface):
+  This class implements GraphAlgoInterface
+  MORE DATA WILL PROVIDED
