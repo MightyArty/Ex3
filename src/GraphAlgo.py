@@ -8,11 +8,26 @@ from src import GraphInterface
 
 class GraphAlgo(GraphAlgoInterface):
 
-    def __init__(self, graph=DiGraph):
+    def __init__(self, graph: DiGraph = DiGraph()):
         self.graph = graph
 
     def get_graph(self) -> GraphInterface:
         return self.graph
+
+    def copy(self):
+        graph = DiGraph()
+        for node in self.graph.nodesMap.values():
+            graph.add_node(node.id, node.location)
+            for edge in self.graph.all_out_edges_of_node(node.id):
+                weight = self.graph.all_in_edges_of_node(node.id).get(edge.weight)
+                graph.add_edge(node.id, edge, weight)
+        return graph
+
+    """
+        Loads a graph from a json file.
+        @param file_name: The path to the json file
+        @returns True if the loading was successful, False o.w.
+    """
 
     def load_from_json(self, file_name: str) -> bool:
         try:
@@ -35,27 +50,24 @@ class GraphAlgo(GraphAlgoInterface):
         @param file_name: The path to the out file
         @return: True if the save was successful, False o.w.
     """
+
     def save_to_json(self, file_name: str) -> bool:
-        if self.graph is None:
-            return False
-
         ans = {"Edges": [], "Nodes": []}
-        for line in self.graph.nodesMap.values():
-            nodesArr = {"id": line.id}
-            if line.location is None:
-                ans["Nodes"].append(nodesArr)
-            else:
-                nodesArr["pos"] = line.location
-            for edge in self.graph.all_out_edges_of_node(line.id):
-                edgesArr = {"src": line.id, "w": self.graph.all_out_edges_of_node(line.id)[edge], "dest": edge}
-                ans["Edges"].append(edgesArr)
-
         try:
             with open(file_name, "w") as file:
-                file.write(json.dump(ans))
+                for node in self.graph.nodesMap.values():
+                    nodesArr = {"id": node.id}
+                    if node.location is None:
+                        ans["Nodes"].append(nodesArr)
+                    else:
+                        nodesArr["pos"] = node.location_toString()
+                    for edge in self.graph.all_out_edges_of_node(node.id):
+                        edgesArr = {"src": node.id, "w": self.graph.all_out_edges_of_node(node.id)[edge], "dest": edge}
+                        ans["Edges"].append(edgesArr)
+                file.write(json.dumps(ans))
                 return True
         except:
-            print("Couldn't write to file")
+            print("Error in writing the file!")
             return False
         finally:
             file.close()

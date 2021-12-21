@@ -3,7 +3,7 @@ from Location import Location
 
 class Node:
 
-    def __init__(self, id, location):
+    def __init__(self, id: int, location: tuple = None):
         self.id = id
         self.location = location
         self.tag = 0
@@ -18,7 +18,7 @@ class Node:
         return self.tag
 
     def __str__(self):
-        return f"Node(location: {self.location}, id: {self.id}"
+        return str(self.id)
 
-    def __repr__(self):
-        return f"Node(location: {self.location}, id: {self.id}"
+    def location_toString(self):
+        return f"{self.location[0]},{self.location[1]},{self.location[2]}"
