@@ -11,3 +11,6 @@ MORE DATA WILL PROVIDED
 # Part II - GraphAlgo class (implements GraphAlgoInterface):
   This class implements GraphAlgoInterface
   MORE DATA WILL PROVIDED
+  
+# Part III - Comparisons:
+In this part we compare our algorithms between our Ex2 assignment algorithms that we build in java - [CLICK HERE TO SEE THE PREVIOUS ASSIGNMENT](https://github.com/MightyArty/Ex2_Graphs)
