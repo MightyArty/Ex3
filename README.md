@@ -14,3 +14,5 @@ MORE DATA WILL PROVIDED
   
 # Part III - Comparisons:
 In this part we compare our algorithms between our Ex2 assignment algorithms that we build in java - [CLICK HERE TO SEE THE PREVIOUS ASSIGNMENT](https://github.com/MightyArty/Ex2_Graphs)
+## JAVA test results 
+![](https://i.ibb.co/S59Y5Dk/Screen-Shot-2021-12-13-at-17-55-20.png)
