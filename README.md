@@ -3,3 +3,6 @@
 
 This project is a implementation to  directed weighted data structure and graph algorithms using Python Programming language. We will devide the README to 3 parts - 
 DiGraph class,GraphAlgo class and comparisons between this assignment (using Python) to the previous (using Java)
+
+# Part I - DiGraph class (implements GraphInterface):
+ This class implements GraphInterface 
