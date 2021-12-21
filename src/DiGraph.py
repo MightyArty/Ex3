@@ -9,12 +9,12 @@ class DiGraph(GraphInterface):
         self.vertexSize = 0
         self.edgeSize = 0
         self.mc = 0
-        self.edgesMap = dict()
-        self.reversEdges = dict()
-        self.nodesMap = dict()
+        self.edgesMap = {}
+        self.reversEdges = {}
+        self.nodesMap = {}
 
     def v_size(self) -> int:
-        return self.vertexSize
+        return len(self.nodesMap)
 
     def e_size(self) -> int:
         return self.edgeSize

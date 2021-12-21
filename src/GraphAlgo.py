@@ -3,12 +3,16 @@ from typing import List
 
 from GraphAlgoInterface import GraphAlgoInterface
 from DiGraph import DiGraph
+from src import GraphInterface
 
 
 class GraphAlgo(GraphAlgoInterface):
 
     def __init__(self, graph=DiGraph):
         self.graph = graph
+
+    def get_graph(self) -> GraphInterface:
+        return self.graph
 
     def load_from_json(self, file_name: str) -> bool:
         try:
@@ -26,9 +30,35 @@ class GraphAlgo(GraphAlgoInterface):
             print("Error in loading json file")
             return False
 
+    """
+        Saves the graph in JSON format to a file
+        @param file_name: The path to the out file
+        @return: True if the save was successful, False o.w.
+    """
     def save_to_json(self, file_name: str) -> bool:
-        try:
+        if self.graph is None:
+            return False
 
+        ans = {"Edges": [], "Nodes": []}
+        for line in self.graph.nodesMap.values():
+            nodesArr = {"id": line.id}
+            if line.location is None:
+                ans["Nodes"].append(nodesArr)
+            else:
+                nodesArr["pos"] = line.location
+            for edge in self.graph.all_out_edges_of_node(line.id):
+                edgesArr = {"src": line.id, "w": self.graph.all_out_edges_of_node(line.id)[edge], "dest": edge}
+                ans["Edges"].append(edgesArr)
+
+        try:
+            with open(file_name, "w") as file:
+                file.write(json.dump(ans))
+                return True
+        except:
+            print("Couldn't write to file")
+            return False
+        finally:
+            file.close()
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         pass
