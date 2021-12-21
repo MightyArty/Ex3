@@ -18,10 +18,10 @@ In this part we compare our algorithms between our Ex2 assignment algorithms tha
 
 | Algorithms    | G1  | G2  | G3 | 1000 NODES | 10000 NODES
 | ------------- |:---:| ---:|:---:|:---------:|:---------:|
-| isConnected   | 16 ms | 5 ms |
-| shortestPathDist| centered      |   $12 |
-| shortestPat | are neat      |    $1 |
-| center | are neat      |    $1 |
-| tsp | are neat      |    $1 |
+| isConnected   | 16 ms | 5 ms | 11 ms | 101 ms | 300 ms 
+| shortestPathDist| 61 ms | 3 ms | 3 ms | 112 ms | 331 ms
+| shortestPat | 125 ms | 65 ms | 65 ms | 152 ms | 497 ms
+| center | 6 ms | 46 ms | 21 ms | 3 sec 58 ms  | 14 min 43 sec
+| tsp | 11 ms | 6 ms | 10 ms | 158 ms | 553 ms
 
 ![](https://i.ibb.co/S59Y5Dk/Screen-Shot-2021-12-13-at-17-55-20.png)
