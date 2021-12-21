@@ -24,4 +24,4 @@ In this part we compare our algorithms between our Ex2 assignment algorithms tha
 | center | 6 ms | 46 ms | 21 ms | 3 sec 58 ms  | 14 min 43 sec
 | tsp | 11 ms | 6 ms | 10 ms | 158 ms | 553 ms
 
-![](https://i.ibb.co/S59Y5Dk/Screen-Shot-2021-12-13-at-17-55-20.png)
+## PYTHON test results
