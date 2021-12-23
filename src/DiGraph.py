@@ -110,6 +110,12 @@ class DiGraph(GraphInterface):
         else:
             return False
 
+    def __str__(self):
+        return str({self.nodesMap.values()})
+
+    def __repr__(self):
+        return f"The graph: {self.nodesMap.values()}"
+
 
 if __name__ == '__main__':
     my = dict()  # //1->3
