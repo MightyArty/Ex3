@@ -1,73 +1,85 @@
 import json
-import sys
-from GraphAlgoInterface import GraphAlgoInterface
 from typing import List
-from Edge import *
-from Node import *
 
+from GraphAlgoInterface import GraphAlgoInterface
+from DiGraph import DiGraph
 from src import GraphInterface
 
 
 class GraphAlgo(GraphAlgoInterface):
 
-    def getGraph(self, g):
-        pass
+    def __init__(self, graph: DiGraph = DiGraph()):
+        self.graph = graph
+
+    def get_graph(self) -> GraphInterface:
+        return self.graph
+
+    def copy(self):
+        graph = DiGraph()
+        for node in self.graph.nodesMap.values():
+            graph.add_node(node.id, node.location)
+            for edge in self.graph.all_out_edges_of_node(node.id):
+                weight = self.graph.all_in_edges_of_node(node.id).get(edge.weight)
+                graph.add_edge(node.id, edge, weight)
+        return graph
+
+    """
+        Loads a graph from a json file.
+        @param file_name: The path to the json file
+        @returns True if the loading was successful, False o.w.
+    """
 
     def load_from_json(self, file_name: str) -> bool:
         try:
-            with open("A0.json", 'r') as f:
-                edgesArr = []
-                data = json.load(f)
-                src = data["src"]
-                weight = data["w"]
-                dst = data["dest"]
-                pos = data["pos"]
-                id = data["id"]
-                arrE = data["Edges"]
-                for line in arrE:
-                    # el = Edges(line["src"], line["w"], line["dest"],line["pos"],line[id])
-                    # edgesArr.append(el)
-                    return True
+            file = open(file_name)
+            data = json.load(file)
+            edges = data["Edges"]
+            nodes = data["Nodes"]
+            for i in edges:
+                self.graph.add_edge(i["src"], i["dest"], i["w"])
+            for i in nodes:
+                self.graph.add_node(i["id"])
+            print("Successfully loaded the json file")
+            return True
+        except:
+            print("Error in loading json file")
+            return False
 
-        except IOError as error:
-            print('No file : %s' %(file_name))
-            return False
-        try:
-            nodesArr = []
-            data = json.load(f)
-            pos = data["pos"]
-            id = data["id"]
-            arrN = data["Nodes"]
-            for line in arrN:
-                # el = Nodes(line["pos"], line["id"])
-                # nodesArr.append(el)
-                return True
-        except IOError as error:
-            print('No file : %s' %(file_name))
-            return False
+    """
+        Saves the graph in JSON format to a file
+        @param file_name: The path to the out file
+        @return: True if the save was successful, False o.w.
+    """
 
     def save_to_json(self, file_name: str) -> bool:
+        ans = {"Edges": [], "Nodes": []}
         try:
-            with open("info_.json", "a") as data:
-                edgesArr = {Edge: {'src': self.src, 'w': self.weight, 'dest': self.dest}}
-                nodesArr = {Node: {'pos': self.location, 'id': self.id}}
-                data.write(json.dumps(edgesArr, nodesArr))
-                data.close()
-
-        except ValueError as e:
+            with open(file_name, "w") as file:
+                for node in self.graph.nodesMap.values():
+                    nodesArr = {"id": node.id}
+                    if node.location is None:
+                        ans["Nodes"].append(nodesArr)
+                    else:
+                        nodesArr["pos"] = node.location_toString()
+                    for edge in self.graph.all_out_edges_of_node(node.id):
+                        edgesArr = {"src": node.id, "w": self.graph.all_out_edges_of_node(node.id)[edge], "dest": edge}
+                        ans["Edges"].append(edgesArr)
+                file.write(json.dumps(ans))
+                return True
+        except:
+            print("Error in writing the file!")
             return False
-        return True
+        finally:
+            file.close()
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         pass
 
-    def plot_graph(self) -> None:
+    def TSP(self, node_lst: List[int]) -> (List[int], float):
         pass
 
+    def centerPoint(self) -> (int, float):
+        pass
 
-
-
-#
-# data = json.load(open("A0.json"))
-# print(type(data['Edges']))
-# print(data)
+    def plot_graph(self) -> None:
+        pass
