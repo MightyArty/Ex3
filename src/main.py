@@ -1,5 +1,6 @@
 from DiGraph import DiGraph
-#from GraphAlgo import GraphAlgo
+from GraphAlgo import GraphAlgo
+from Node import *
 
 
 def check():
@@ -105,4 +106,10 @@ def check0():
 
 
 if __name__ == '__main__':
-    check0()
+    n = Node(id(1))
+    g = DiGraph()
+    pos1 = (1,2,3)
+    g.add_node(1,pos1)
+    n.location_toString(pos1)
+    # check0()
+

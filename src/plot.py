@@ -1,12 +1,15 @@
 import sys
 from GraphAlgo import *
 from matplotlib import pyplot as plt
+
 from matplotlib.patches import ConnectionPatch
 from DiGraph import *
 from Node import Node
 fig, (ax1) = plt.subplots(figsize=(5, 5))
 graph = DiGraph()
-# load = GraphAlgo.load_from_json("A0.json") #load file from json
+graphAgo = GraphAlgo()
+load = graphAgo.load_from_json("A0.json")
+get = graphAgo.get_graph()
 t = (41, 82, 0)  # loc(x,y,z)
 b = (44, 50, 0)  # loc(x,y,z)
 c = (97, 55, 0)  # loc(x,y,z)
@@ -52,4 +55,8 @@ plt.ylim(0, 100)  # limit Y
 plt.show()
 
 if __name__ == '__main__':
-    print(childes)
+    print (keys)
+    # print(childes)
+    # print(load)
+    # print(get)
+
