@@ -117,6 +117,10 @@ if __name__ == '__main__':
     temp = dict()
     edge = DiGraph()
     temp[3] = edge
+    # tup = tuple()
+    # tup[0] = 5
+    # print(tup)
+
 
     if temp.__contains__(3):
         print(temp.get(3))

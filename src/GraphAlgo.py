@@ -45,7 +45,16 @@ class GraphAlgo(GraphAlgoInterface):
             return False
 
     def save_to_json(self, file_name: str) -> bool:
-        pass
+        try:
+            with open("info_.json", "a") as data:
+                edgesArr = {Edge: {'src': self.src, 'w': self.weight, 'dest': self.dest}}
+                nodesArr = {Node: {'pos': self.location, 'id': self.id}}
+                data.write(json.dumps(edgesArr, nodesArr))
+                data.close()
+
+        except ValueError as e:
+            return False
+        return True
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         pass

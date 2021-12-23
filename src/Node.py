@@ -10,4 +10,3 @@ class Node:
         self.info = ""
         self.weight = 0
 
-
