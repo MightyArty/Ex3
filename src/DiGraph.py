@@ -1,7 +1,6 @@
 from Edge import Edge
 from GraphInterface import GraphInterface
 from Node import Node
-import numpy as np
 
 
 class DiGraph(GraphInterface):
@@ -10,12 +9,12 @@ class DiGraph(GraphInterface):
         self.vertexSize = 0
         self.edgeSize = 0
         self.mc = 0
-        self.edgesMap = dict()
-        self.reversEdges = dict()
-        self.nodesMap = dict()
+        self.edgesMap = {}
+        self.reversEdges = {}
+        self.nodesMap = {}
 
     def v_size(self) -> int:
-        return self.vertexSize
+        return len(self.nodesMap)
 
     def e_size(self) -> int:
         return self.edgeSize
@@ -78,7 +77,7 @@ class DiGraph(GraphInterface):
 
     def remove_node(self, node_id: int) -> bool:
         if self.nodesMap.__contains__(node_id):
-            self.nodesMap.pop(node_id)
+            # self.nodesMap.pop(node_id)
             self.mc += 1
             self.vertexSize -= 1
             if self.edgesMap.__contains__(node_id):
@@ -111,16 +110,15 @@ class DiGraph(GraphInterface):
         else:
             return False
 
-    def print(self):
-        for i in range(self.v_size()):
-            print(self.nodesMap[i].location_toString())
-
 
 if __name__ == '__main__':
     my = dict()  # //1->3
     temp = dict()
-    edge = DiGraph()
+    edge = DiGraph(1, 3, 5)
     temp[3] = edge
+
+    if temp.__contains__(3):
+        print(temp.get(3))
 
     # print(temp)
     # temp.pop(3)
@@ -130,28 +128,3 @@ if __name__ == '__main__':
     my[1] = temp
     keys = my.keys()
 # print(len(keys))
-a = [55]
-a.append(1)
-a.append(2)
-m = []
-# for i in range(10):
-#     a = []
-#     for j in range(10):
-#         if i == j:
-#             a.append(0)
-#         else:
-#             a.append(1)
-#     m.append(a)
-#
-# for i in range(10):
-#     for j in range(10):
-#         print(m[i][j], end=" ")
-#     print()
-g = DiGraph()
-a = (1, 2, 3)
-b = (2, 3, 4)
-c = (3, 4, 5)
-g.add_node(0, a)
-g.add_node(1, b)
-g.add_node(2, c)
-print(g.print())
