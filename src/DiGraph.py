@@ -110,21 +110,20 @@ class DiGraph(GraphInterface):
         else:
             return False
 
+    def __str__(self):
+        return str({self.nodesMap.values()})
+
+    def __repr__(self):
+        return f"The graph: {self.nodesMap.values()}"
 
 if __name__ == '__main__':
-    my = dict()  # //1->3
-    temp = dict()
-    edge = DiGraph(1, 3, 5)
-    temp[3] = edge
+    g = DiGraph()
+    a = (1, 2, 3)
+    b = (2, 3, 4)
+    c = (3, 4, 5)
+    g.add_node(0, a)
+    g.add_node(1, b)
+    g.add_node(2, c)
+    print(g.nodesMap.values())
 
-    if temp.__contains__(3):
-        print(temp.get(3))
 
-    # print(temp)
-    # temp.pop(3)
-    # print(temp)
-    # print(len(temp))
-    my['two'] = '2'
-    my[1] = temp
-    keys = my.keys()
-# print(len(keys))

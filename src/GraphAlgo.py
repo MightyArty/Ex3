@@ -3,7 +3,7 @@ from typing import List
 
 from GraphAlgoInterface import GraphAlgoInterface
 from DiGraph import DiGraph
-from src import GraphInterface
+from GraphInterface import GraphInterface
 
 
 class GraphAlgo(GraphAlgoInterface):
@@ -13,15 +13,6 @@ class GraphAlgo(GraphAlgoInterface):
 
     def get_graph(self) -> GraphInterface:
         return self.graph
-
-    def copy(self):
-        graph = DiGraph()
-        for node in self.graph.nodesMap.values():
-            graph.add_node(node.id, node.location)
-            for edge in self.graph.all_out_edges_of_node(node.id):
-                weight = self.graph.all_in_edges_of_node(node.id).get(edge.weight)
-                graph.add_edge(node.id, edge, weight)
-        return graph
 
     """
         Loads a graph from a json file.
