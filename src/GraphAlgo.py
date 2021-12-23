@@ -1,21 +1,17 @@
 import json
-from queue import Queue
 from typing import List
-
 from GraphAlgoInterface import GraphAlgoInterface
 from DiGraph import DiGraph
 from DiGraph import GraphInterface
 
 
 class GraphAlgo(GraphAlgoInterface):
-    def get_graph(self) -> GraphInterface:
-        """
-        :return: the directed graph on which the algorithm works on.
-        """
-        pass
 
     def __init__(self, g=DiGraph()):
         self.graph = g
+
+    def get_graph(self) -> GraphInterface:
+        return self.graph
 
     def load_from_json(self, file_name: str) -> bool:
         try:
@@ -34,20 +30,38 @@ class GraphAlgo(GraphAlgoInterface):
             return False
 
     def save_to_json(self, file_name: str) -> bool:
-        pass
+        ans = {"Edges": [], "Nodes": []}
+        try:
+            with open(file_name, "w") as file:
+                for node in self.graph.nodesMap.values():
+                    nodesArr = {"id": node.id}
+                    if node.location is None:
+                        ans["Nodes"].append(nodesArr)
+                    else:
+                        nodesArr["pos"] = node.location_toString()
+                    for edge in self.graph.all_out_edges_of_node(node.id):
+                        edgesArr = {"src": node.id, "w": self.graph.all_out_edges_of_node(node.id)[edge], "dest": edge}
+                        ans["Edges"].append(edgesArr)
+                file.write(json.dumps(ans))
+                return True
+        except:
+            print("Error in writing the file!")
+            return False
+        finally:
+            file.close()
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
-        ans = dict()
+        vertexDirection = dict()
         if self.graph.nodesMap[id1] is None or self.graph.nodesMap[id2] is None or self.graph is None:
-            ans[float('inf')] = []
-            return ans
+            vertexDirection[float('inf')] = []
+            return vertexDirection
         if id1 == id2:
-            ans[0] = [id1]
-            return ans
+            vertexDirection[0] = [id1]
+            return vertexDirection
         tempGraph = self.graph
         curr = tempGraph.nodesMap[id1]
         curr.weight = 0
-        ans[id1] = curr
+        vertexDirection[id1] = curr
         for n in tempGraph.nodesMap.values():
             tempNode = n
             if tempNode.id != id1:
@@ -57,23 +71,32 @@ class GraphAlgo(GraphAlgoInterface):
         curr.info = "Not Visited"
         pq = [curr]
         while len(pq) != 0:
-            edges = tempGraph.all_out_edges_of_node(curr.id)
-            for e in edges.values():
-                if curr.id != e:
-                    sumWeight = e.weight + tempGraph.nodesMap[e.dest].weight
+            if curr.id != id2:
+                tempDict = self.graph.edgesMap[curr.id]
+            for e in tempDict.values():
+                if curr.id != e.dest:
+                    sumWeight = e.weight + tempGraph.nodesMap[e.src].weight
                     if tempGraph.nodesMap[e.dest].weight > sumWeight:
                         tempGraph.nodesMap[e.dest].weight = sumWeight
                         tempGraph.nodesMap[e.dest].tag = curr.id
-                        ans[e.dest] = curr.id
-                tempNode = tempGraph.nodesMap[e]
+                        vertexDirection[e.dest] = curr
+                tempNode = tempGraph.nodesMap[e.dest]
                 if tempNode.info != "Visited":
                     pq.append(tempGraph.nodesMap[e.dest])
             if pq[0] is not None:
-                tempGraph.nodesMap[pq[0]].info = "Visited"
+                tempGraph.nodesMap[pq[0].id].info = "Visited"
                 pq.pop(0)
+            if len(pq) != 0:
                 curr = pq[0]
         minWeight = tempGraph.nodesMap[id2].weight
-        return minWeight
+        ansArr = list()
+        ansArr.append(tempGraph.nodesMap[id2].id)
+        index = id2
+        while index != id1:
+            ansArr.append(vertexDirection[index].tag)
+            index = vertexDirection[index].tag
+        ansArr.reverse()
+        return minWeight, ansArr
 
     def TSP(self, node_lst: List[int]) -> (List[int], float):
         pass
@@ -89,6 +112,7 @@ class GraphAlgo(GraphAlgoInterface):
                 else:
                     a.append(float('inf'))
             matrix.append(a)
+
         for i in range(size):
             keys = self.graph.all_out_edges_of_node(i).keys()
             for j in range(size):
@@ -119,6 +143,7 @@ class GraphAlgo(GraphAlgoInterface):
             tempMax = min
         ans[id] = tempMax
         return ans
+
 
     def plot_graph(self) -> None:
         pass
