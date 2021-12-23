@@ -2,6 +2,8 @@ import json
 import sys
 from GraphAlgoInterface import GraphAlgoInterface
 from typing import List
+from Edge import *
+from Node import *
 
 from src import GraphInterface
 

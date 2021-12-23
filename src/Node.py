@@ -1,4 +1,5 @@
 from Location import Location
+import random
 
 
 class Node:
