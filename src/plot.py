@@ -1,6 +1,7 @@
 import sys
 from GraphAlgo import *
 from matplotlib import pyplot as plt
+from Edge import *
 
 from matplotlib.patches import ConnectionPatch
 from DiGraph import *
@@ -10,6 +11,7 @@ graph = DiGraph()
 graphAgo = GraphAlgo()
 load = graphAgo.load_from_json("A0.json")
 get = graphAgo.get_graph()
+
 t = (41, 82, 0)  # loc(x,y,z)
 b = (44, 50, 0)  # loc(x,y,z)
 c = (97, 55, 0)  # loc(x,y,z)
@@ -38,8 +40,9 @@ plt.scatter(x_list, y_list, color='green')  # green node dot
 for i in range(3):
     plt.text(x_list[i], y_list[i], f'{id[i]}', ha='center', fontsize=12) # add node id
 
-for i in keys:
-    childes = graph.all_out_edges_of_node(id[i]).values(i)
+# for i in keys:
+#     childes = graph.all_out_edges_of_node(id[i]).values(i)
+
 
 coordsA = "data"
 coordsB = "data"
@@ -55,8 +58,11 @@ plt.ylim(0, 100)  # limit Y
 plt.show()
 
 if __name__ == '__main__':
-    print (keys)
+    # graph.add_edge(1,2,5)
+    # graph.add_edge(1, 3, 15)
+    # print(graph.all_out_edges_of_node(1).keys())
+    # print (childes)
     # print(childes)
-    # print(load)
-    # print(get)
+    print(load)
+    print(get.get_all_v())
 
