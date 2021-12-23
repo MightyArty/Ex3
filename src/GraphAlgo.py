@@ -26,7 +26,7 @@ class GraphAlgo(GraphAlgoInterface):
             for i in edges:
                 self.graph.add_edge(i["src"], i["dest"], i["w"])
             for i in nodes:
-                self.graph.add_node(i["id"])
+                self.graph.add_node(i["id"], i["pos"])
             print("Successfully loaded the json file")
             return True
         except:
@@ -58,17 +58,16 @@ class GraphAlgo(GraphAlgoInterface):
         pq = [curr]
         while len(pq) != 0:
             edges = tempGraph.all_out_edges_of_node(curr.id)
-            for destination in edges.values():
-                if curr.id != destination:
-                    # need to fix it
-                    sumWeight = 10 + tempGraph.nodesMap[destination].weight
-                    if tempGraph.nodesMap[destination].weight > sumWeight:
-                        tempGraph.nodesMap[destination].weight = sumWeight
-                        tempGraph.nodesMap[destination].tag = curr.id
-                        ans[destination] = curr.id
-                tempNode = tempGraph.nodesMap[destination]
+            for e in edges.values():
+                if curr.id != e:
+                    sumWeight = e.weight + tempGraph.nodesMap[e.dest].weight
+                    if tempGraph.nodesMap[e.dest].weight > sumWeight:
+                        tempGraph.nodesMap[e.dest].weight = sumWeight
+                        tempGraph.nodesMap[e.dest].tag = curr.id
+                        ans[e.dest] = curr.id
+                tempNode = tempGraph.nodesMap[e]
                 if tempNode.info != "Visited":
-                    pq.append(tempGraph.nodesMap[destination])
+                    pq.append(tempGraph.nodesMap[e.dest])
             if pq[0] is not None:
                 tempGraph.nodesMap[pq[0]].info = "Visited"
                 pq.pop(0)
