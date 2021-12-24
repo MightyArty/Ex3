@@ -22,19 +22,27 @@ class GraphAlgo(GraphAlgoInterface):
     """
 
     def load_from_json(self, file_name: str) -> bool:
+        graph = DiGraph()
+        Edges: list
+        Nodes: list
         try:
-            file = open(file_name)
-            data = json.load(file)
-            edges = data["Edges"]
-            nodes = data["Nodes"]
-            for i in edges:
-                self.graph.add_edge(i["src"], i["dest"], i["w"])
-            for i in nodes:
-                self.graph.add_node(i["id"])
-            print("Successfully loaded the json file")
-            return True
+            with open(file_name, 'r') as f:
+                r = json.load(f)
+                Edges = r["Edges"]
+                Nodes = r["Nodes"]
+
+                for node in Nodes:
+                    out = node["pos"].split(',')
+                    pos = (float(out[0]), float(out[1]), float(out[2]))
+                    graph.add_node(node["id"], pos)
+
+                for edge in Edges:
+                    graph.add_edge(edge["src"], edge["dest"], edge["w"])
+                self.graph = graph
+                print("Successfully loaded from json format")
+                return True
         except():
-            print("Error in loading json file")
+            print("Error in loading from json format")
             return False
 
     """
@@ -44,25 +52,24 @@ class GraphAlgo(GraphAlgoInterface):
     """
 
     def save_to_json(self, file_name: str) -> bool:
-        ans = {"Edges": [], "Nodes": []}
+        output = {"Edges": [], "Nodes": []}
+        for node in self.graph.nodesMap.values():
+            dict1 = {"id": node.id}
+            if node.pos is not None:
+                dict1["pos"] = node.pos
+            output["Nodes"].append(dict1)
+
+            for edge in self.graph.all_out_edges_of_node(node.id):
+                dict2 = {"src": node.id, "w": self.graph.all_out_edges_of_node(node.id)[edge], "dest": edge}
+                output["Edges"].append(dict2)
         try:
-            with open(file_name, "w") as file:
-                for node in self.graph.nodesMap.values():
-                    nodesArr = {"id": node.id}
-                    if node.location is None:
-                        ans["Nodes"].append(nodesArr)
-                    else:
-                        nodesArr["pos"] = node.location_toString()
-                    for edge in self.graph.all_out_edges_of_node(node.id):
-                        edgesArr = {"src": node.id, "w": self.graph.all_out_edges_of_node(node.id)[edge], "dest": edge}
-                        ans["Edges"].append(edgesArr)
-                file.write(json.dumps(ans))
+            with open(file_name, "w") as f:
+                f.write(json.dumps(output))
+                print("Successfully saved to json format")
                 return True
         except():
-            print("Error in writing the file!")
+            print("Error in saving to json format")
             return False
-        finally:
-            file.close()
 
     """
         Returns the shortest path from node id1 to node id2 using Dijkstra's Algorithm
@@ -138,25 +145,25 @@ class GraphAlgo(GraphAlgoInterface):
 
         # getting all the nodes from the given list
         for node in node_lst:
-            getNodes.append(node.id)
+            getNodes.append(node.get_id)
 
         # if there are only one node in the given list
         if len(getNodes) == 1:
-            ans.append(node_lst[0])
+            ans.append(node_lst.index(0))
             return ans
 
         first = getNodes[0]  # first node in the list
         second = getNodes[1]  # second node in the list
 
         while getNodes is not None:
-            if (ans is not None) and (ans.index(len(ans) - 1).id == first):
+            if (ans is not None) and (ans.index(len(ans) - 1).get_id == first):
                 ans.remove(len(ans) - 1)
 
                 arr = self.shortest_path(first, second)
                 temp = List
 
                 for n in arr:
-                    temp.append(arr)
+                    temp.append(n.get_id)
                 getNodes.remove(temp)
                 ans.append(arr)
 
@@ -167,7 +174,47 @@ class GraphAlgo(GraphAlgoInterface):
         return ans
 
     def centerPoint(self) -> (int, float):
-        pass
+        size = len(self.graph.nodesMap)
+        matrix = []
+        for i in range(size):
+            a = []
+            for j in range(size):
+                if i == j:
+                    a.append(0)
+                else:
+                    a.append(float('inf'))
+            matrix.append(a)
+
+        for i in range(size):
+            keys = self.graph.all_out_edges_of_node(i).keys()
+            for j in range(size):
+                if keys.__contains__(j):
+                    Edge = self.graph.edgesMap[i]
+                    matrix[i][j] = Edge[j].weight
+
+        for k in range(size):
+            for i in range(size):
+                for j in range(size):
+                    if matrix[i][j] > matrix[i][k] + matrix[k][j]:
+                        matrix[i][j] = matrix[i][k] + matrix[k][j]
+        ans = dict()
+        min = float('inf')
+        id = -1
+        minMax = -1
+        for i in range(size):
+            max = -1
+            for j in range(size):
+                if matrix[i][j] > max:
+                    max = matrix[i][j]
+            if max == float('inf'):
+                return float('inf')
+            elif min > max:
+                min = max
+        if minMax < min:
+            id = i
+            tempMax = min
+        ans[id] = tempMax
+        return ans
 
     """
         Plots the graph.
@@ -178,3 +225,10 @@ class GraphAlgo(GraphAlgoInterface):
 
     def plot_graph(self) -> None:
         pass
+
+
+if __name__ == '__main__':
+    g = GraphAlgo()
+    file = '/Users/valhalla/PycharmProjects/Ex3/data/A1.json'
+    g.load_from_json(file)
+    g.save_to_json("outputTEST.json")
