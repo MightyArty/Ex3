@@ -1,6 +1,6 @@
 from Edge import Edge
 from GraphInterface import GraphInterface
-from Node import Node
+from Node import *
 
 
 class DiGraph(GraphInterface):
@@ -116,14 +116,21 @@ class DiGraph(GraphInterface):
     def __repr__(self):
         return f"The graph: {self.nodesMap.values()}"
 
+
 if __name__ == '__main__':
-    g = DiGraph()
-    a = (1, 2, 3)
-    b = (2, 3, 4)
-    c = (3, 4, 5)
-    g.add_node(0, a)
-    g.add_node(1, b)
-    g.add_node(2, c)
-    print(g.nodesMap.values())
+    my = dict()  # //1->3
+    temp = dict()
+    edge = DiGraph(1, 3, 5)
+    temp[3] = edge
 
+    if temp.__contains__(3):
+        print(temp.get(3))
 
+    # print(temp)
+    # temp.pop(3)
+    # print(temp)
+    # print(len(temp))
+    my['two'] = '2'
+    my[1] = temp
+    keys = my.keys()
+# print(len(keys))

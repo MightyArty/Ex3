@@ -1,25 +1,17 @@
 import json
-import random
 from typing import List
-
 from GraphAlgoInterface import GraphAlgoInterface
 from DiGraph import DiGraph
-from GraphInterface import GraphInterface
+from DiGraph import GraphInterface
 
 
 class GraphAlgo(GraphAlgoInterface):
 
-    def __init__(self, graph: DiGraph = DiGraph()):
-        self.graph = graph
+    def __init__(self, g=DiGraph()):
+        self.graph = g
 
     def get_graph(self) -> GraphInterface:
         return self.graph
-
-    """
-        Loads a graph from a json file.
-        @param file_name: The path to the json file
-        @returns True if the loading was successful, False o.w.
-    """
 
     def load_from_json(self, file_name: str) -> bool:
         try:
@@ -30,18 +22,12 @@ class GraphAlgo(GraphAlgoInterface):
             for i in edges:
                 self.graph.add_edge(i["src"], i["dest"], i["w"])
             for i in nodes:
-                self.graph.add_node(i["id"],i["pos"])
+                self.graph.add_node(i["id"], i["pos"])
             print("Successfully loaded the json file")
             return True
-        except():
+        except:
             print("Error in loading json file")
             return False
-
-    """
-        Saves the graph in JSON format to a file
-        @param file_name: The path to the out file
-        @return: True if the save was successful, False o.w.
-    """
 
     def save_to_json(self, file_name: str) -> bool:
         ans = {"Edges": [], "Nodes": []}
@@ -58,22 +44,11 @@ class GraphAlgo(GraphAlgoInterface):
                         ans["Edges"].append(edgesArr)
                 file.write(json.dumps(ans))
                 return True
-        except():
+        except:
             print("Error in writing the file!")
             return False
         finally:
             file.close()
-
-    """
-        Returns the shortest path from node id1 to node id2 using Dijkstra's Algorithm
-        @param id1: The start node id
-        @param id2: The end node id
-        @return: The distance of the path, a list of the nodes ids that the path goes through
-        Notes:
-            If there is no path between id1 and id2, or one of them dose not exist the function returns (float('inf'),[])
-            More info:
-            https://en.wikipedia.org/wiki/Dijkstra's_algorithm
-    """
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         vertexDirection = dict()
@@ -123,58 +98,52 @@ class GraphAlgo(GraphAlgoInterface):
         ansArr.reverse()
         return minWeight, ansArr
 
-    """
-        Finds the shortest path that visits all the nodes in the list
-        param: node_lst: A list of nodes id's
-        return: A list of the nodes id's in the path, and the overall distance
-    """
-
     def TSP(self, node_lst: List[int]) -> (List[int], float):
-        if node_lst is None:
-            print("The list should not be empty !")
-
-        ans = List
-        getNodes = List
-
-        # getting all the nodes from the given list
-        for node in node_lst:
-            getNodes.append(node.id)
-
-        # if there are only one node in the given list
-        if len(getNodes) == 1:
-            ans.append(node_lst[0])
-            return ans
-
-        first = getNodes[0]  # first node in the list
-        second = getNodes[1]  # second node in the list
-
-        while getNodes is not None:
-            if (ans is not None) and (ans.index(len(ans) - 1).id == first):
-                ans.remove(len(ans) - 1)
-
-                arr = self.shortest_path(first, second)
-                temp = List
-
-                for n in arr:
-                    temp.append(arr)
-                getNodes.remove(temp)
-                ans.append(arr)
-
-                if getNodes is not None:
-                    first = second
-                    second = getNodes.index(0)
-
-        return ans
-
-    def centerPoint(self) -> (int, float):
         pass
 
-    """
-        Plots the graph.
-        If the nodes have a position, the nodes will be placed there.
-        Otherwise, they will be placed in a random but elegant manner.
-        @return: None
-    """
+    def centerPoint(self) -> (int, float):
+        size = len(self.graph.nodesMap)
+        matrix = []
+        for i in range(size):
+            a = []
+            for j in range(size):
+                if i == j:
+                    a.append(0)
+                else:
+                    a.append(float('inf'))
+            matrix.append(a)
+
+        for i in range(size):
+            keys = self.graph.all_out_edges_of_node(i).keys()
+            for j in range(size):
+                if keys.__contains__(j):
+                    Edge = self.graph.edgesMap[i]
+                    matrix[i][j] = Edge[j].weight
+
+        for k in range(size):
+            for i in range(size):
+                for j in range(size):
+                    if matrix[i][j] > matrix[i][k] + matrix[k][j]:
+                        matrix[i][j] = matrix[i][k] + matrix[k][j]
+        ans = dict()
+        min = float('inf')
+        id = -1
+        minMax = -1
+        for i in range(size):
+            max = -1
+            for j in range(size):
+                if matrix[i][j] > max:
+                    max = matrix[i][j]
+            if max == float('inf'):
+                return float('inf')
+            elif min > max:
+                min = max
+        if minMax < min:
+            id = i
+            tempMax = min
+        ans[id] = tempMax
+        return ans
+
 
     def plot_graph(self) -> None:
         pass
