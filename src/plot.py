@@ -62,9 +62,14 @@ if __name__ == '__main__':
 
 # print(nodes['Node id'])
 # print(nodes.pop('pos'))
-#     print(nodes['pos'])
-    print(nodes.get('pos'))
-    print(nodes.values())
+
+    print(nodes.get(0))
+    tempList = [x for x in nodes[i].pos]
+    print(tempList)
+    # print(nodes[2].pos)
+    # print(nodes[1].pos)
+ # print(nodes[0])
+# print(nodes)
 # print(locations)
 # print(nodes)
 # print(keys)
