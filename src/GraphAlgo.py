@@ -1,54 +1,86 @@
 import json
+import random
 from typing import List
+
 from GraphAlgoInterface import GraphAlgoInterface
 from DiGraph import DiGraph
-from DiGraph import GraphInterface
+from GraphInterface import GraphInterface
 
 
 class GraphAlgo(GraphAlgoInterface):
 
-    def __init__(self, g=DiGraph()):
-        self.graph = g
+    def __init__(self, graph: DiGraph = DiGraph()):
+        self.graph = graph
 
     def get_graph(self) -> GraphInterface:
         return self.graph
 
+    """
+        Loads a graph from a json file.
+        @param file_name: The path to the json file
+        @returns True if the loading was successful, False o.w.
+    """
+
     def load_from_json(self, file_name: str) -> bool:
+        graph = DiGraph()
+        Edges: list
+        Nodes: list
         try:
-            file = open(file_name)
-            data = json.load(file)
-            edges = data["Edges"]
-            nodes = data["Nodes"]
-            for i in edges:
-                self.graph.add_edge(i["src"], i["dest"], i["w"])
-            for i in nodes:
-                self.graph.add_node(i["id"], i["pos"])
-            print("Successfully loaded the json file")
-            return True
-        except:
-            print("Error in loading json file")
+            with open(file_name, 'r') as f:
+                r = json.load(f)
+                Edges = r["Edges"]
+                Nodes = r["Nodes"]
+
+                for node in Nodes:
+                    out = node["pos"].split(',')
+                    pos = (float(out[0]), float(out[1]), float(out[2]))
+                    graph.add_node(node["id"], pos)
+
+                for edge in Edges:
+                    graph.add_edge(edge["src"], edge["dest"], edge["w"])
+                self.graph = graph
+                print("Successfully loaded from json format")
+                return True
+        except():
+            print("Error in loading from json format")
             return False
 
+    """
+        Saves the graph in JSON format to a file
+        @param file_name: The path to the out file
+        @return: True if the save was successful, False o.w.
+    """
+
     def save_to_json(self, file_name: str) -> bool:
-        ans = {"Edges": [], "Nodes": []}
+        output = {"Edges": [], "Nodes": []}
+        for node in self.graph.nodesMap.values():
+            dict1 = {"id": node.id}
+            if node.pos is not None:
+                dict1["pos"] = node.pos
+            output["Nodes"].append(dict1)
+
+            for edge in self.graph.all_out_edges_of_node(node.id):
+                dict2 = {"src": node.id, "w": self.graph.all_out_edges_of_node(node.id)[edge], "dest": edge}
+                output["Edges"].append(dict2)
         try:
-            with open(file_name, "w") as file:
-                for node in self.graph.nodesMap.values():
-                    nodesArr = {"id": node.id}
-                    if node.location is None:
-                        ans["Nodes"].append(nodesArr)
-                    else:
-                        nodesArr["pos"] = node.location_toString()
-                    for edge in self.graph.all_out_edges_of_node(node.id):
-                        edgesArr = {"src": node.id, "w": self.graph.all_out_edges_of_node(node.id)[edge], "dest": edge}
-                        ans["Edges"].append(edgesArr)
-                file.write(json.dumps(ans))
+            with open(file_name, "w") as f:
+                f.write(json.dumps(output))
+                print("Successfully saved to json format")
                 return True
-        except:
-            print("Error in writing the file!")
+        except():
+            print("Error in saving to json format")
             return False
-        finally:
-            file.close()
+
+    """
+        Returns the shortest path from node id1 to node id2 using Dijkstra's Algorithm
+        @param id1: The start node id
+        @param id2: The end node id
+        @return: The distance of the path, a list of the nodes ids that the path goes through
+        Notes:
+            If there is no path between id1 and id2, or one of them dose not exist the function returns (float('inf'),[])
+            More info:
+            https://en.wikipedia.org/wiki/Dijkstra's_algorithm
+    """
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         vertexDirection = dict()
@@ -98,8 +130,48 @@ class GraphAlgo(GraphAlgoInterface):
         ansArr.reverse()
         return minWeight, ansArr
 
+    """
+        Finds the shortest path that visits all the nodes in the list
+        param: node_lst: A list of nodes id's
+        return: A list of the nodes id's in the path, and the overall distance
+    """
+
     def TSP(self, node_lst: List[int]) -> (List[int], float):
-        pass
+        if node_lst is None:
+            print("The list should not be empty !")
+
+        ans = List
+        getNodes = List
+
+        # getting all the nodes from the given list
+        for node in node_lst:
+            getNodes.append(node.get_id)
+
+        # if there are only one node in the given list
+        if len(getNodes) == 1:
+            ans.append(node_lst.index(0))
+            return ans
+
+        first = getNodes[0]  # first node in the list
+        second = getNodes[1]  # second node in the list
+
+        while getNodes is not None:
+            if (ans is not None) and (ans.index(len(ans) - 1).get_id == first):
+                ans.remove(len(ans) - 1)
+
+                arr = self.shortest_path(first, second)
+                temp = List
+
+                for n in arr:
+                    temp.append(n.get_id)
+                getNodes.remove(temp)
+                ans.append(arr)
+
+                if getNodes is not None:
+                    first = second
+                    second = getNodes.index(0)
+
+        return ans
 
     def centerPoint(self) -> (int, float):
         size = len(self.graph.nodesMap)
@@ -144,6 +216,19 @@ class GraphAlgo(GraphAlgoInterface):
         ans[id] = tempMax
         return ans
 
+    """
+        Plots the graph.
+        If the nodes have a position, the nodes will be placed there.
+        Otherwise, they will be placed in a random but elegant manner.
+        @return: None
+    """
 
     def plot_graph(self) -> None:
         pass
+
+
+if __name__ == '__main__':
+    g = GraphAlgo()
+    file = '/Users/valhalla/PycharmProjects/Ex3/data/A1.json'
+    g.load_from_json(file)
+    g.save_to_json("outputTEST.json")
