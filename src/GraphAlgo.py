@@ -29,7 +29,7 @@ class GraphAlgo(GraphAlgoInterface):
             for i in edges:
                 self.graph.add_edge(i["src"], i["dest"], i["w"])
             for i in nodes:
-                self.graph.add_node(i["id"])
+                self.graph.add_node(i["id"],i["pos"])
             print("Successfully loaded the json file")
             return True
         except:

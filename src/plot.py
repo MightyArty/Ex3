@@ -19,14 +19,14 @@ graph.add_node(1, t)  # add node (id,tuple)
 graph.add_node(2, b)
 graph.add_node(3, c)
 locations = []
-nodes = graph.get_all_v().values()
+nodes = get.get_all_v()
 id = []
-keys = graph.nodesMap.keys()
+keys = get.graph.nodesMap.keys()
 
 # set the id & loc into keys
 for i in keys:
     id.append(graph.nodesMap.get(i).id)
-    locations.append(graph.nodesMap.get(i).location)
+    locations.append(graph.nodesMap.get(i).pos)
 
 x_list = [loc[0] for loc in locations]  # store x values
 y_list = [loc[1] for loc in locations]  # store y values
@@ -63,6 +63,6 @@ if __name__ == '__main__':
     # print(graph.all_out_edges_of_node(1).keys())
     # print (childes)
     # print(childes)
-    print(load)
-    print(get.get_all_v())
+    print(nodes)
+    # print(get.get_all_v())
 
