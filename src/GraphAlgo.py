@@ -142,7 +142,7 @@ class GraphAlgo(GraphAlgoInterface):
             ansArr.append(tempGraph.nodesMap[id2].id)
             index = id2
             while index != id1:
-                ansArr.append(vertexDirection[index].tag)
+                ansArr.append(vertexDirection[index].id)
                 index = vertexDirection[index].id
             ansArr.reverse()
             return minWeight, ansArr
@@ -156,28 +156,31 @@ class GraphAlgo(GraphAlgoInterface):
     """
 
     def TSP(self, node_lst: List[int]) -> (List[int], float):
-        if node_lst is None:
+        if (node_lst is None) or len(node_lst) < 1:
             print("The list should not be empty !")
-            return -1
+            return [], -1
 
-        output = []  # return list
-        bestDest = 0  # return destination
-        temp = copy.deepcopy(node_lst)  # copy of the given list
+        # if there are only one node in the given list
+        # just return this node
+        if len(node_lst) == 1:
+            return [node_lst, 0]
 
-        output.append(temp[0])
-        temp.remove(temp[0])
+        output = []
+        destination = 0
+        tempList = copy.deepcopy(node_lst)  # copy of the given list
 
-        while len(temp) > 0:
-            currentDest = 0
-            currentNode = 0
-            for node in temp:
-                destination, arr = self.shortest_path(output[-1], node)
-                if destination < currentDest:
-                    currentDest = destination
-                    currentNode = arr[-1]
-            bestDest = bestDest + currentDest
-            output.append(currentNode)
-        return output, bestDest
+        # go from start to the last node of the list and compare
+        # each 2 nodes [0,1],[1,2]...[n-1,n]
+        for runner in range(0, len(tempList) - 1):
+            first = tempList[runner]
+            second = tempList[runner + 1]
+            currentDist = self.shortest_path(first, second)[1]
+            destination = destination + self.shortest_path(first, second)[0]
+
+            for i in currentDist:
+                if i not in output:
+                    output.append(i)
+        return output, destination
 
     def centerPoint(self) -> (int, float):
         size = len(self.graph.nodesMap)
@@ -229,13 +232,5 @@ class GraphAlgo(GraphAlgoInterface):
         Otherwise, they will be placed in a random but elegant manner.
         @return: None
     """
-
     def plot_graph(self) -> None:
         pass
-
-
-if __name__ == '__main__':
-    g = GraphAlgo()
-    file = '/Users/valhalla/PycharmProjects/Ex3/data/A1.json'
-    g.load_from_json(file)
-    g.save_to_json("outputTEST.json")
