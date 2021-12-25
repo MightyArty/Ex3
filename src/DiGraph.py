@@ -89,14 +89,16 @@ class DiGraph(GraphInterface):
                 self.edgeSize = self.edgeSize - len(self.edgesMap.get(node_id))
                 self.mc += len(self.edgesMap.get(node_id))
                 Dict = self.edgesMap.pop(node_id)
-                for e in Dict:
-                    self.reversEdges.pop(e.src)
+                # Dict = self.edgesMap.get(node_id)
+                for e in Dict.values():
+                    self.reversEdges.pop(e.dest)
             if self.reversEdges.__contains__(node_id):
                 self.edgeSize = self.edgeSize - len((self.reversEdges.get(node_id)))
                 self.mc += len((self.reversEdges.get(node_id)))
                 Dict = self.reversEdges.pop(node_id)
-                for e in Dict:
-                    self.edgesMap.pop(e.dest)
+                for e in Dict.values():
+                    self.edgesMap.pop(e.src)
+            self.nodesMap.pop(node_id)
             return True
         else:
             return False
