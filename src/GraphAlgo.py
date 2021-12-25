@@ -100,51 +100,54 @@ class GraphAlgo(GraphAlgoInterface):
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         vertexDirection = dict()
-        if self.graph.nodesMap[id1] is None or self.graph.nodesMap[id2] is None or self.graph is None:
-            vertexDirection[float('inf')] = []
-            return vertexDirection
-        if id1 == id2:
-            vertexDirection[0] = [id1]
-            return vertexDirection
-        tempGraph = self.graph
-        curr = tempGraph.nodesMap[id1]
-        curr.weight = 0
-        vertexDirection[id1] = curr
-        for n in tempGraph.nodesMap.values():
-            tempNode = n
-            if tempNode.id != id1:
-                tempGraph.nodesMap[tempNode.id].weight = float('inf')  # set the weight
-                tempGraph.nodesMap[tempNode.id].info = "Not Visited"
-                tempGraph.nodesMap[tempNode.id].tag = -1
-        curr.info = "Not Visited"
-        pq = [curr]
-        while len(pq) != 0:
-            if curr.id != id2:
-                tempDict = self.graph.edgesMap[curr.id]
-            for e in tempDict.values():
-                if curr.id != e.dest:
-                    sumWeight = e.weight + tempGraph.nodesMap[e.src].weight
-                    if tempGraph.nodesMap[e.dest].weight > sumWeight:
-                        tempGraph.nodesMap[e.dest].weight = sumWeight
-                        tempGraph.nodesMap[e.dest].tag = curr.id
-                        vertexDirection[e.dest] = curr
-                tempNode = tempGraph.nodesMap[e.dest]
-                if tempNode.info != "Visited":
-                    pq.append(tempGraph.nodesMap[e.dest])
-            if pq[0] is not None:
-                tempGraph.nodesMap[pq[0].id].info = "Visited"
-                pq.pop(0)
-            if len(pq) != 0:
-                curr = pq[0]
-        minWeight = tempGraph.nodesMap[id2].weight
         ansArr = list()
-        ansArr.append(tempGraph.nodesMap[id2].id)
-        index = id2
-        while index != id1:
-            ansArr.append(vertexDirection[index].tag)
-            index = vertexDirection[index].tag
-        ansArr.reverse()
-        return minWeight, ansArr
+        try:
+            if self.graph.nodesMap[id1] is None or self.graph.nodesMap[id2] is None or self.graph is None:
+                vertexDirection[float('inf')] = []
+                return vertexDirection
+            if id1 == id2:
+                vertexDirection[0] = [id1]
+                return vertexDirection
+            tempGraph = self.graph
+            curr = tempGraph.nodesMap[id1]
+            curr.weight = 0
+            vertexDirection[id1] = curr
+            for n in tempGraph.nodesMap.values():
+                tempNode = n
+                if tempNode.id != id1:
+                    tempGraph.nodesMap[tempNode.id].weight = float('inf')  # set the weight
+                    tempGraph.nodesMap[tempNode.id].info = "Not Visited"
+                    tempGraph.nodesMap[tempNode.id].tag = -1
+            curr.info = "Not Visited"
+            pq = [curr]
+            while len(pq) != 0:
+                if curr.id != id2:
+                    tempDict = self.graph.edgesMap[curr.id]
+                for e in tempDict.values():
+                    if curr.id != e.dest:
+                        sumWeight = e.weight + tempGraph.nodesMap[e.src].weight
+                        if tempGraph.nodesMap[e.dest].weight > sumWeight:
+                            tempGraph.nodesMap[e.dest].weight = sumWeight
+                            tempGraph.nodesMap[e.dest].tag = curr.id
+                            vertexDirection[e.dest] = curr
+                    tempNode = tempGraph.nodesMap[e.dest]
+                    if tempNode.info != "Visited":
+                        pq.append(tempGraph.nodesMap[e.dest])
+                if pq[0] is not None:
+                    tempGraph.nodesMap[pq[0].id].info = "Visited"
+                    pq.pop(0)
+                if len(pq) != 0:
+                    curr = pq[0]
+            minWeight = tempGraph.nodesMap[id2].weight
+            ansArr.append(tempGraph.nodesMap[id2].id)
+            index = id2
+            while index != id1:
+                ansArr.append(vertexDirection[index].tag)
+                index = vertexDirection[index].id
+            ansArr.reverse()
+            return minWeight, ansArr
+        except Exception:
+            return -1, ansArr
 
     """
         Finds the shortest path that visits all the nodes in the list
@@ -155,25 +158,26 @@ class GraphAlgo(GraphAlgoInterface):
     def TSP(self, node_lst: List[int]) -> (List[int], float):
         if node_lst is None:
             print("The list should not be empty !")
+            return -1
 
-        ans = []
-        destination = 0
+        output = []  # return list
+        bestDest = 0  # return destination
         temp = copy.deepcopy(node_lst)  # copy of the given list
-        ans.append(temp.pop(0))  # first
-        temp.remove(temp.pop(0))  # remove the first
+
+        output.append(temp[0])
+        temp.remove(temp[0])
 
         while len(temp) > 0:
+            currentDest = 0
             currentNode = 0
-            currentDist = 0
             for node in temp:
-                dist = 0
-                arr = self.shortest_path(ans[-1], node)
-                if dist < currentDist:
-                    currentDist = dist
+                destination, arr = self.shortest_path(output[-1], node)
+                if destination < currentDest:
+                    currentDest = destination
                     currentNode = arr[-1]
-            destination = destination + currentDist
-            ans.append(currentNode)
-        return ans, destination
+            bestDest = bestDest + currentDest
+            output.append(currentNode)
+        return output, bestDest
 
     def centerPoint(self) -> (int, float):
         size = len(self.graph.nodesMap)
@@ -200,22 +204,23 @@ class GraphAlgo(GraphAlgoInterface):
                     if matrix[i][j] > matrix[i][k] + matrix[k][j]:
                         matrix[i][j] = matrix[i][k] + matrix[k][j]
         ans = dict()
-        min = float('inf')
         id = -1
-        minMax = -1
+        maxMin = float('inf')
         for i in range(size):
             max = -1
             for j in range(size):
+                min = float('inf')
                 if matrix[i][j] > max:
                     max = matrix[i][j]
-            if max == float('inf'):
-                return float('inf')
-            elif min > max:
-                min = max
-        if minMax < min:
-            id = i
-            tempMax = min
-        ans[id] = tempMax
+                if max == float('inf'):
+                    return float('inf')
+                elif min > max:
+                    min = max
+            if maxMin > min:
+                maxMin = min
+                id = i
+
+        ans[id] = maxMin
         return ans
 
     """

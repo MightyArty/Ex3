@@ -4,8 +4,6 @@ class Node:
         self.id = myID
         self.pos = pos
         self.tag = 0
-        self.info = ""
-        self.weight = 0
 
     def get_id(self):
         return self.id
