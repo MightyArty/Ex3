@@ -116,14 +116,4 @@ class DiGraph(GraphInterface):
     def __repr__(self):
         return f"The graph: {self.nodesMap.values()}"
 
-if __name__ == '__main__':
-    g = DiGraph()
-    a = (1, 2, 3)
-    b = (2, 3, 4)
-    c = (3, 4, 5)
-    g.add_node(0, a)
-    g.add_node(1, b)
-    g.add_node(2, c)
-    print(g.nodesMap.values())
-
 
