@@ -1,3 +1,4 @@
+import copy
 import json
 import random
 from typing import List
@@ -14,6 +15,15 @@ class GraphAlgo(GraphAlgoInterface):
 
     def get_graph(self) -> GraphInterface:
         return self.graph
+
+    def copy(self):
+        graph = DiGraph()
+        for node in self.graph.nodesMap.values():
+            graph.add_node(node.id, node.pos)
+            for edge in self.graph.all_out_edges_of_node(node.id):
+                weight = self.graph.edgesMap[node.id][edge]
+                graph.add_edge(node.id, edge, weight)
+        return graph
 
     """
         Loads a graph from a json file.
@@ -32,8 +42,14 @@ class GraphAlgo(GraphAlgoInterface):
                 Nodes = r["Nodes"]
 
                 for node in Nodes:
-                    out = node["pos"].split(',')
-                    pos = (float(out[0]), float(out[1]), float(out[2]))
+                    try:
+                        out = node["pos"].split(',')
+                        pos = (float(out[0]), float(out[1]), float(out[2]))
+                    except Exception:
+                        pointX = random.randint(5, 50)
+                        pointY = random.randint(5, 50)
+                        pos = (pointX, pointY, 0.0)
+
                     graph.add_node(node["id"], pos)
 
                 for edge in Edges:
@@ -140,38 +156,24 @@ class GraphAlgo(GraphAlgoInterface):
         if node_lst is None:
             print("The list should not be empty !")
 
-        ans = List
-        getNodes = List
+        ans = []
+        destination = 0
+        temp = copy.deepcopy(node_lst)  # copy of the given list
+        ans.append(temp.pop(0))  # first
+        temp.remove(temp.pop(0))  # remove the first
 
-        # getting all the nodes from the given list
-        for node in node_lst:
-            getNodes.append(node.get_id)
-
-        # if there are only one node in the given list
-        if len(getNodes) == 1:
-            ans.append(node_lst.index(0))
-            return ans
-
-        first = getNodes[0]  # first node in the list
-        second = getNodes[1]  # second node in the list
-
-        while getNodes is not None:
-            if (ans is not None) and (ans.index(len(ans) - 1).get_id == first):
-                ans.remove(len(ans) - 1)
-
-                arr = self.shortest_path(first, second)
-                temp = List
-
-                for n in arr:
-                    temp.append(n.get_id)
-                getNodes.remove(temp)
-                ans.append(arr)
-
-                if getNodes is not None:
-                    first = second
-                    second = getNodes.index(0)
-
-        return ans
+        while len(temp) > 0:
+            currentNode = 0
+            currentDist = 0
+            for node in temp:
+                dist = 0
+                arr = self.shortest_path(ans[-1], node)
+                if dist < currentDist:
+                    currentDist = dist
+                    currentNode = arr[-1]
+            destination = destination + currentDist
+            ans.append(currentNode)
+        return ans, destination
 
     def centerPoint(self) -> (int, float):
         size = len(self.graph.nodesMap)
