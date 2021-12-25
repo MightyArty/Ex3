@@ -38,9 +38,11 @@ class TestDiGraph(TestCase):
 
     def test_add_edge(self):
         before = graph.e_size()
-        graph.add_edge(2, 6, 1)
+        graph.add_edge(1, 2, 1)
         e = graph.e_size()
         self.assertNotEqual(before, e)
+        flag = graph.add_edge(99, 98, 97).__bool__()  # node ids doesn't exist
+        self.assertEqual(flag, False)
 
     def test_add_node(self):
         before = graph.v_size()  # 3
@@ -54,6 +56,8 @@ class TestDiGraph(TestCase):
         graph.remove_node(2)
         e = graph.v_size()  # 2
         self.assertNotEqual(e, before)
+        flag = graph.remove_node(1).__bool__()  # not working
+        print(flag)
 
     def test_remove_edge(self):
         before = graph.e_size()  # 1
