@@ -56,9 +56,14 @@ class DiGraph(GraphInterface):
             tempHas = self.edgesMap[id1]
             tempHas[id2] = e
             self.edgesMap[id1] = tempHas
-            reverseTemp = dict()
-            reverseTemp[id1] = e
-            self.reversEdges[id2] = reverseTemp
+            if not self.reversEdges.__contains__(id2):
+                reverseTemp = dict()
+                reverseTemp[id1] = e
+                self.reversEdges[id2] = reverseTemp
+            else:
+                reverseTemp = self.reversEdges[id2]
+                reverseTemp[id1] = e
+                self.reversEdges[id2] = reverseTemp
             self.edgeSize += 1
             self.mc += 1
             return True

@@ -143,7 +143,7 @@ class GraphAlgo(GraphAlgoInterface):
             index = id2
             while index != id1:
                 ansArr.append(vertexDirection[index].tag)
-                index = vertexDirection[index].tag
+                index = vertexDirection[index].id
             ansArr.reverse()
             return minWeight, ansArr
         except Exception:
@@ -204,22 +204,23 @@ class GraphAlgo(GraphAlgoInterface):
                     if matrix[i][j] > matrix[i][k] + matrix[k][j]:
                         matrix[i][j] = matrix[i][k] + matrix[k][j]
         ans = dict()
-        min = float('inf')
         id = -1
-        minMax = -1
+        maxMin = float('inf')
         for i in range(size):
             max = -1
             for j in range(size):
+                min = float('inf')
                 if matrix[i][j] > max:
                     max = matrix[i][j]
-            if max == float('inf'):
-                return float('inf')
-            elif min > max:
-                min = max
-        if minMax < min:
-            id = i
-            tempMax = min
-        ans[id] = tempMax
+                if max == float('inf'):
+                    return float('inf')
+                elif min > max:
+                    min = max
+            if maxMin > min:
+                maxMin = min
+                id = i
+
+        ans[id] = maxMin
         return ans
 
     """
