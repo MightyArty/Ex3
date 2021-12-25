@@ -52,13 +52,24 @@ plt.show()
 if __name__ == '__main__':
     outEdge = []
     outID = []
+    temp = []
     for i in nodes.keys():
         outEdge.append(get.all_out_edges_of_node(i))
-
-    # for i in range(outEdge):
-        outID = outEdge.values()
-
-
+    print(outEdge)
+    for i in range(len(outEdge)):
+        outID.append(outEdge[i].keys())
     print(outID)
+    for i in outID:
+        temp.append(outID[i])
+    # temp = [x for x in outID[0]]
+    print(temp)
+
+
+    # print(outID)
+    # for i in range(outEdge):
+    #     outID = outEdge.values()
+
+
+    # print(outID)
 
 

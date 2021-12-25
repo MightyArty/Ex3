@@ -14,6 +14,9 @@ class TestDiGraph(TestCase):
     def test_v_size(self):
         e = graph.v_size()
         self.assertTrue(e,3)
+        tempTuple = (9,9,0)
+        e2 = graph.add_node(10,tempTuple)
+        self.assertTrue(e2,4)
 
     def test_e_size(self):
         e = graph.e_size()
@@ -24,26 +27,31 @@ class TestDiGraph(TestCase):
         e = graph.get_all_v()
         self.assertTrue(e,graph.nodesMap)
 
+
     def test_all_in_edges_of_node(self):
         e = graph.all_in_edges_of_node(1)
         self.assertTrue(e,1)
 
 
     def test_all_out_edges_of_node(self):
-        e = graph.all_out_edges_of_node(0) # 1 edge to 5
+        e = graph.all_out_edges_of_node(0)
         self.assertTrue(e,1)
 
 
     def test_get_mc(self):
         e = graph.get_mc()
         self.assertTrue(e,4)
-
+        graph.remove_edge(0, 1)
+        e2 = graph.get_mc()
+        self.assertTrue(e2, 5)
 
     def test_add_edge(self):
         before = graph.e_size()
-        graph.add_edge(2,6,1)
+        graph.add_edge(1,2,1)
         e = graph.e_size()
         self.assertNotEqual(before,e)
+        flag = graph.add_edge(99, 98, 97).__bool__() # node ids doesn't exist
+        self.assertEqual(flag,False)
 
 
     def test_add_node(self):
@@ -52,6 +60,10 @@ class TestDiGraph(TestCase):
         graph.add_node(4,temp)
         e = graph.v_size() # 4
         self.assertNotEqual(before, e)
+        flagTuple = ()
+        flag = graph.add_node(1,flagTuple).__bool__() # id already exist
+        self.assertEqual(flag,False)
+
 
 
     def test_remove_node(self):
@@ -59,9 +71,8 @@ class TestDiGraph(TestCase):
         graph.remove_node(2)
         e = graph.v_size() #2
         self.assertNotEqual(e,before)
-
-
-
+        flag = graph.remove_node(1).__bool__() #not working
+        print(flag)
 
 
 
@@ -70,4 +81,5 @@ class TestDiGraph(TestCase):
         graph.remove_edge(0,1)
         e = graph.e_size() #0
         self.assertNotEqual(e,before)
-
+        flag = graph.remove_edge(99,92).__bool__()
+        self.assertEqual(flag,False)
