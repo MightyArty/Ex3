@@ -55,9 +55,9 @@ def check1():
     g_algo = GraphAlgo()  # init an empty graph - for the GraphAlgo
     file = "/Users/valhalla/PycharmProjects/Ex3/data/T0.json"
     g_algo.load_from_json(file)  # init a GraphAlgo from a json file
-    # print(g_algo.shortest_path(0, 3))
-    # print(g_algo.shortest_path(3, 1))
-    print(g_algo.centerPoint())
+    print(g_algo.shortest_path(0, 3))
+    print(g_algo.shortest_path(3, 1))
+    # print(g_algo.centerPoint())
     # g_algo.save_to_json(file + '_saved')
     # g_algo.plot_graph()
 
@@ -108,5 +108,5 @@ def check2():
 
 if __name__ == '__main__':
     # check0()  # V
-    # check1() # problem with defining the nodesM
-    check2()
+    check1()
+    # check2()
