@@ -159,8 +159,8 @@ class GraphAlgo(GraphAlgoInterface):
         ans = []
         destination = 0
         temp = copy.deepcopy(node_lst)  # copy of the given list
-        ans.append(temp.pop(0))  # first
-        temp.remove(temp.pop(0))  # remove the first
+        ans.append(temp[0])  # first
+        temp.remove(temp[0])  # remove the first
 
         while len(temp) > 0:
             currentNode = 0
