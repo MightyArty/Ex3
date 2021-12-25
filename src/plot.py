@@ -50,5 +50,15 @@ plt.tight_layout()
 plt.show()
 
 if __name__ == '__main__':
-    # print(locations)
-    pass
+    outEdge = []
+    outID = []
+    for i in nodes.keys():
+        outEdge.append(get.all_out_edges_of_node(i))
+
+    # for i in range(outEdge):
+        outID = outEdge.values()
+
+
+    print(outID)
+
+
