@@ -27,7 +27,7 @@ class TestGraphAlgo(TestCase):
 
     def test_tsp(self): # need to be fixed
         graph.load_from_json(file)
-        test = graph.TSP([3,2,9])
+        test = graph.TSP([3,5,7])
         print(test)
 
     def test_center_point(self):
