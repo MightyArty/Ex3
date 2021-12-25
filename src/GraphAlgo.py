@@ -160,24 +160,24 @@ class GraphAlgo(GraphAlgoInterface):
             print("The list should not be empty !")
             return -1
 
-        ans = []
-        destination = 0
+        output = []  # return list
+        bestDest = 0  # return destination
         temp = copy.deepcopy(node_lst)  # copy of the given list
-        ans.append(temp[0])  # first
-        temp.remove(temp[0])  # remove the first
+
+        output.append(temp[0])
+        temp.remove(temp[0])
 
         while len(temp) > 0:
+            currentDest = 0
             currentNode = 0
-            currentDist = 0
             for node in temp:
-                dist = 0
-                arr = self.shortest_path(ans[-1], node)
-                if dist < currentDist:
-                    currentDist = dist
+                destination, arr = self.shortest_path(output[-1], node)
+                if destination < currentDest:
+                    currentDest = destination
                     currentNode = arr[-1]
-            destination = destination + currentDist
-            ans.append(currentNode)
-        return ans, destination
+            bestDest = bestDest + currentDest
+            output.append(currentNode)
+        return output, bestDest
 
     def centerPoint(self) -> (int, float):
         size = len(self.graph.nodesMap)

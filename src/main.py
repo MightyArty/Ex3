@@ -71,7 +71,7 @@ def check2():
     g_algo = GraphAlgo()
     file = '/Users/valhalla/PycharmProjects/Ex3/data/A5.json'
     g_algo.load_from_json(file)
-    # g_algo.get_graph().remove_edge(13, 14)
+    g_algo.get_graph().remove_edge(13, 14)
     # g_algo.save_to_json(file + "_edited")
     # dist, path = g_algo.shortest_path(1, 7)
     # print(dist, path)
@@ -108,5 +108,5 @@ def check2():
 
 if __name__ == '__main__':
     # check0()  # V
-    check1()
-    # check2()
+    # check1()
+    check2()
