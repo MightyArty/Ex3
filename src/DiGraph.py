@@ -40,33 +40,34 @@ class DiGraph(GraphInterface):
         return self.mc
 
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
-        e = Edge(id1, id2, weight)
-        destMap = self.edgesMap.get(id1)
-        if destMap is None:
-            destMap = dict()
-            destMap[id2] = e
-            self.edgesMap[id1] = destMap
-            reversTemp = dict()
-            reversTemp[id1] = e
-            self.reversEdges[id2] = reversTemp
-            self.edgeSize += 1
-            self.mc += 1
-            return True
-        elif not destMap.__contains__(id2):
-            tempHas = self.edgesMap[id1]
-            tempHas[id2] = e
-            self.edgesMap[id1] = tempHas
-            if not self.reversEdges.__contains__(id2):
-                reverseTemp = dict()
-                reverseTemp[id1] = e
-                self.reversEdges[id2] = reverseTemp
-            else:
-                reverseTemp = self.reversEdges[id2]
-                reverseTemp[id1] = e
-                self.reversEdges[id2] = reverseTemp
-            self.edgeSize += 1
-            self.mc += 1
-            return True
+        if self.nodesMap.__contains__(id1) and self.nodesMap.__contains__(id2):
+            e = Edge(id1, id2, weight)
+            destMap = self.edgesMap.get(id1)
+            if destMap is None:
+                destMap = dict()
+                destMap[id2] = e
+                self.edgesMap[id1] = destMap
+                reversTemp = dict()
+                reversTemp[id1] = e
+                self.reversEdges[id2] = reversTemp
+                self.edgeSize += 1
+                self.mc += 1
+                return True
+            elif not destMap.__contains__(id2):
+                tempHas = self.edgesMap[id1]
+                tempHas[id2] = e
+                self.edgesMap[id1] = tempHas
+                if not self.reversEdges.__contains__(id2):
+                    reverseTemp = dict()
+                    reverseTemp[id1] = e
+                    self.reversEdges[id2] = reverseTemp
+                else:
+                    reverseTemp = self.reversEdges[id2]
+                    reverseTemp[id1] = e
+                    self.reversEdges[id2] = reverseTemp
+                self.edgeSize += 1
+                self.mc += 1
+                return True
         else:
             return False
 
@@ -120,5 +121,3 @@ class DiGraph(GraphInterface):
 
     def __repr__(self):
         return f"The graph: {self.nodesMap.values()}"
-
-
