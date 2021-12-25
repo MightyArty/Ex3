@@ -1,6 +1,5 @@
 from unittest import TestCase
 from GraphAlgo import *
-import os
 graph = GraphAlgo()
 file = r"/Users/david/Desktop/Ex3-new/src/A0.json"
 
@@ -26,15 +25,15 @@ class TestGraphAlgo(TestCase):
         print(short)
 
 
-    def test_tsp(self):
+    def test_tsp(self): # need to be fixed
         graph.load_from_json(file)
-        test = graph.TSP([3,5,7])
+        test = graph.TSP([3,2,9])
         print(test)
 
     def test_center_point(self):
         graph.load_from_json(file)
-        center = graph.centerPoint()
-        self.assertTrue(center,6.806805834715163)
+        e = graph.centerPoint()
+        self.assertTrue(e,6.806805834715163)
 
 
     def test_plot_graph(self):
