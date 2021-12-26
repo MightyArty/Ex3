@@ -1,5 +1,6 @@
 from unittest import TestCase
-from DiGraph import *
+
+from src.DiGraph import *
 
 graph = DiGraph()
 a = (1,2,0)

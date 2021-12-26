@@ -1,7 +1,7 @@
 from unittest import TestCase
 from GraphAlgo import *
 graph = GraphAlgo()
-file = r"/Users/david/Desktop/Ex3-new/data/A1.json" #Enter your path here
+file = r"/Users/david/Desktop/Ex3-new/data/A0.json"  #Enter your path here
 
 class TestGraphAlgo(TestCase):
     def test_get_graph(self):
@@ -16,7 +16,7 @@ class TestGraphAlgo(TestCase):
 
     def test_save_to_json(self):
         e = graph.load_from_json(file)
-        save = graph.save_to_json("testUnit.json")
+        save = graph.save_to_json("testUnit.json") # name of the output file
         self.assertTrue(e,save)
 
     def test_shortest_path(self):
