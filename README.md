@@ -53,3 +53,6 @@ In this part we compare our algorithms between our Ex2 assignment algorithms tha
 | tsp | 11 ms | 6 ms | 10 ms | 158 ms | 553 ms
 
 For full comparisons please follow the link to our Wiki - [CLICK HERE ](https://github.com/MightyArty/Ex3/wiki/Comparison-between-JAVA-results-and-Python-results)
+
+#GUI (Graph Plot)
+https://i.ibb.co/CV00dK2/image.png
