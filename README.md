@@ -29,7 +29,14 @@ DiGraph class,GraphAlgo class and comparisons between this assignment (using Pyt
 # Part II - GraphAlgo class (implements GraphAlgoInterface):
   **In this class we have the next functions :**
   
-  get_graph, load_from_json, save_to_json, shortest_path, TSP, centerPoint, plot_graph
+ </br>`get_graph()` - return the init graph
+</br>`load_from_json()` - save the graph to a json file with the given file name
+</br>`save_to_json()` - load the graph from a json file by the give file name
+</br>`shortest_path()` - compute the shortest path between to nodes using Dijkstra's algorithm, and return (weight, path)
+</br>`TSP()` - adding node to the graph
+</br>`centerPoint()` - remove node from the graph and all the connections with other nodes
+</br>`plot_graph()` - plot the graph to a window using matplotlib
+  
   
   
   
