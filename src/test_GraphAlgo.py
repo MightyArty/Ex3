@@ -1,7 +1,7 @@
 from unittest import TestCase
 from GraphAlgo import *
 graph = GraphAlgo()
-file = r"/Users/david/Desktop/Ex3-new/src/A0.json"
+file = r"/Users/david/Desktop/Ex3-new/data/A1.json" #Enter your path here
 
 class TestGraphAlgo(TestCase):
     def test_get_graph(self):
@@ -25,10 +25,11 @@ class TestGraphAlgo(TestCase):
         print(short)
 
 
-    def test_tsp(self): # need to be fixed
+    def test_tsp(self):
         graph.load_from_json(file)
-        test = graph.TSP([3,5,7])
-        print(test)
+        test = graph.TSP([1,3,7])
+        self.assertTrue(test[0], [1, 2, 3, 6, 7])
+
 
     def test_center_point(self):
         graph.load_from_json(file)
@@ -39,3 +40,5 @@ class TestGraphAlgo(TestCase):
     def test_plot_graph(self):
         graph.load_from_json(file)
         graph.plot_graph()
+
+
