@@ -13,6 +13,12 @@ DiGraph class,GraphAlgo class and comparisons between this assignment (using Pyt
 
 # Part I - DiGraph class (implements GraphInterface):
  **In this class we have the next functions :**
+</br>`v_size()` - return the number of nodes in the graph (|V|)
+</br>`e_size()` - return the number of edges in the graph (|E|)
+</br>`get_all_v()` - return a dictionary of graph nodes {(node_id : NodeData)}
+</br>`all_in_edges_of_node()` - return a dictionary of all the nodes connected to node {(parent_id, weight)}
+</br>`all_in_edges_of_node()` - return a dictionary of all the nodes connected from the node {(child_id, weight)}
+</br>`e_size()` - return the number of edges in the graph (|E|)
  
  v_size, e_size, get_all_v, all_in_edges_of_node, all_out_edges_of_node, get_mc, add_edge, add_node, remove_node, remove_edge
   
