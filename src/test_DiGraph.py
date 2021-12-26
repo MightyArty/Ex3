@@ -1,26 +1,22 @@
 from unittest import TestCase
-
-from src.DiGraph import *
+from DiGraph import *
 
 graph = DiGraph()
-a = (1,2,0)
-b = (2,4,0)
-c = (6,3,0)
-graph.add_node(0,a)
-graph.add_node(1,b)
-graph.add_node(2,c)
-graph.add_edge(0,1,5) # one edge 2 -- 4
+a = (1, 2, 0)
+b = (2, 4, 0)
+c = (6, 3, 0)
+graph.add_node(0, a)
+graph.add_node(1, b)
+graph.add_node(2, c)
+graph.add_edge(0, 1, 5)  # one edge 2 -- 4
 
 class TestDiGraph(TestCase):
-
-
     def test_v_size(self):
         e = graph.v_size()
         self.assertTrue(e,3)
         tempTuple = (9,9,0)
         e2 = graph.add_node(10,tempTuple)
         self.assertTrue(e2,4)
-
 
     def test_e_size(self):
         e = graph.e_size()
@@ -79,11 +75,11 @@ class TestDiGraph(TestCase):
         self.assertEqual(flag,True)
 
     def test_remove_edge(self):
-        before = graph.e_size() #1
-        graph.remove_edge(0,1)
-        e = graph.e_size() #0
-        self.assertNotEqual(e,before)
-        flag = graph.remove_edge(99,92).__bool__()
-        self.assertEqual(flag,False)
-
-
+        graph.add_edge(2, 1, 10)
+        before = graph.e_size()
+        graph.remove_edge(2, 1)
+        graph.remove_edge(2, 1)
+        e = graph.e_size()  # 0
+        self.assertNotEqual(e, before)
+        flag = graph.remove_edge(99, 92).__bool__()
+        self.assertEqual(flag, False)
