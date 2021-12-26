@@ -54,5 +54,7 @@ In this part we compare our algorithms between our Ex2 assignment algorithms tha
 
 For full comparisons please follow the link to our Wiki - [CLICK HERE ](https://github.com/MightyArty/Ex3/wiki/Comparison-between-JAVA-results-and-Python-results)
 
-#GUI (Graph Plot)
-https://i.ibb.co/CV00dK2/image.png
+# GUI (Graph Plot)
+![A0.json](https://i.ibb.co/CV00dK2/image.png)
+Here we can see our implementation of our algorithm using Matplotlib. The location of the nodes is their actual postion (X,Y) on the grid with the following IDS
+
