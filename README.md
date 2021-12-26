@@ -18,9 +18,12 @@ DiGraph class,GraphAlgo class and comparisons between this assignment (using Pyt
 </br>`get_all_v()` - return a dictionary of graph nodes {(node_id : NodeData)}
 </br>`all_in_edges_of_node()` - return a dictionary of all the nodes connected to node {(parent_id, weight)}
 </br>`all_in_edges_of_node()` - return a dictionary of all the nodes connected from the node {(child_id, weight)}
-</br>`e_size()` - return the number of edges in the graph (|E|)
+</br>`get_mc()` - return graph mode count
+</br>`add_edge()` - connect between two nodes with weight
+</br>`add_node()` - adding node to the graph
+</br>`remove_node()` - remove node from the graph and all the connections with other nodes
+</br>`remove_edge()` -- removing connection between 2 nodes
  
- v_size, e_size, get_all_v, all_in_edges_of_node, all_out_edges_of_node, get_mc, add_edge, add_node, remove_node, remove_edge
   
 
 # Part II - GraphAlgo class (implements GraphAlgoInterface):
