@@ -8,7 +8,7 @@ c = (6, 3, 0)
 graph.add_node(0, a)
 graph.add_node(1, b)
 graph.add_node(2, c)
-graph.add_edge(0, 1, 5)  # one edge 2 -- 4
+graph.add_edge(0, 1, 5)
 
 
 class TestDiGraph(TestCase):
@@ -29,7 +29,7 @@ class TestDiGraph(TestCase):
         self.assertTrue(e, 1)
 
     def test_all_out_edges_of_node(self):
-        e = graph.all_out_edges_of_node(0)  # 1 edge to 5
+        e = graph.all_out_edges_of_node(0)
         self.assertTrue(e, 1)
 
     def test_get_mc(self):
@@ -38,7 +38,7 @@ class TestDiGraph(TestCase):
 
     def test_add_edge(self):
         before = graph.e_size()
-        graph.add_edge(2, 6, 1)
+        graph.add_edge(0, 2, 1)
         e = graph.e_size()
         self.assertNotEqual(before, e)
 
@@ -51,7 +51,7 @@ class TestDiGraph(TestCase):
 
     def test_remove_node(self):
         before = graph.v_size()  # 3
-        graph.remove_node(2)
+        graph.remove_node(1)
         e = graph.v_size()  # 2
         self.assertNotEqual(e, before)
 
