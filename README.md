@@ -33,8 +33,8 @@ DiGraph class,GraphAlgo class and comparisons between this assignment (using Pyt
 </br>`load_from_json()` - save the graph to a json file with the given file name
 </br>`save_to_json()` - load the graph from a json file by the give file name
 </br>`shortest_path()` - compute the shortest path between to nodes using Dijkstra's algorithm, and return (weight, path)
-</br>`TSP()` - adding node to the graph
-</br>`centerPoint()` - remove node from the graph and all the connections with other nodes
+</br>`TSP()` - Finds the shortest path that visits all the nodes in the list
+</br>`centerPoint()` - Finds the node that has the shortest distance to it's farthest node.
 </br>`plot_graph()` - plot the graph to a window using matplotlib
   
   
