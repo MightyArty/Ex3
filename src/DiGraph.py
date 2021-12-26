@@ -104,16 +104,18 @@ class DiGraph(GraphInterface):
             return False
 
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
-        tempMap = self.edgesMap.get(node_id1)
-        if tempMap is not None:
-            tempMap.pop(node_id2)
-            self.edgesMap[node_id1] = tempMap
-            reversedTempMap = self.reversEdges.get(node_id2)
-            reversedTempMap.pop(node_id1)
-            self.reversEdges[node_id2] = reversedTempMap
-            self.edgeSize -= 1
-            self.mc += 1
-            return True
+        if self.nodesMap.__contains__(node_id1) and self.nodesMap.__contains__(node_id2):
+            tempMap = self.edgesMap.get(node_id1)
+            if tempMap is not None:
+                if len(tempMap)!=0:
+                    tempMap.pop(node_id2)
+                    self.edgesMap[node_id1] = tempMap
+                    reversedTempMap = self.reversEdges.get(node_id2)
+                    reversedTempMap.pop(node_id1)
+                    self.reversEdges[node_id2] = reversedTempMap
+                self.edgeSize -= 1
+                self.mc += 1
+                return True
         else:
             return False
 
