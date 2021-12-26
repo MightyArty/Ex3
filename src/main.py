@@ -18,8 +18,6 @@ def check():
     (7, 6.806805834715163)
     ([1,3,4,2],3.5)
     """
-    # check0()
-
 
 def check0():
     """
@@ -108,7 +106,7 @@ def check3():
 
 
 if __name__ == '__main__':
-    # check0()  # V
-    # check1()  # V
-    # check2()  # V
-    # check3()  # V
+    check0()  # V
+    check1()  # V
+    check2()  # V
+    check3()  # V

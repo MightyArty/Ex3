@@ -178,7 +178,7 @@ class GraphAlgo(GraphAlgoInterface):
             destination = destination + self.shortest_path(first, second)[0]
 
             for i in currentDist:
-                if i not in output:
+                if not output.__contains__(i):
                     output.append(i)
         return output, destination
 
