@@ -115,6 +115,8 @@ class DiGraph(GraphInterface):
                     self.reversEdges[node_id2] = reversedTempMap
                     self.edgeSize -= 1
                     self.mc += 1
+                else:
+                    self.edgesMap.pop(node_id1)
             return True
         else:
             return False

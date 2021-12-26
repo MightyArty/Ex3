@@ -72,6 +72,7 @@ class TestDiGraph(TestCase):
         graph.add_edge(2, 1, 10)
         before = graph.e_size()
         graph.remove_edge(2, 1)
+        graph.remove_edge(2, 1)
         e = graph.e_size()  # 0
         self.assertNotEqual(e, before)
         flag = graph.remove_edge(99, 92).__bool__()
