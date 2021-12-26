@@ -3,6 +3,9 @@ import json
 import random
 from typing import List
 
+from matplotlib import pyplot as plt
+from matplotlib.patches import ConnectionPatch
+
 from GraphAlgoInterface import GraphAlgoInterface
 from DiGraph import DiGraph
 from GraphInterface import GraphInterface
@@ -231,7 +234,44 @@ class GraphAlgo(GraphAlgoInterface):
     """
 
     def plot_graph(self) -> None:
-        pass
+        # define dimensions of figure and axis
+
+        fig, (ax1) = plt.subplots(figsize=(15, 15))  # set image dimensions
+
+        nodes = self.graph.get_all_v()# (node_key: int, (x,y) :tuple)
+        nodes_keys = nodes.keys()
+
+        x_values = [nodes[id].pos[0] for id in nodes_keys]
+
+        y_values = [nodes[id].pos[1] for id in nodes_keys]
+
+        # Construct a set of all class edge
+        arrows = set()
+        for v in nodes:
+            start = (nodes[v].pos[0], nodes[v].pos[1])
+            outgoing_edges = self.graph.all_out_edges_of_node(v)
+
+            for e in outgoing_edges.keys():
+                weight = outgoing_edges[e]
+                dest_id = e
+
+                end_x_value = nodes[dest_id].pos[0]
+                end_y_value = nodes[dest_id].pos[1]
+                end = (end_x_value, end_y_value)
+                coordsA = "data"
+                coordsB = "data"
+                arrows.add(ConnectionPatch(start, end, coordsA, coordsB, arrowstyle = "-|>", shrinkA = 5, shrinkB = 5,linewidth=2,color="r",mutation_scale=30))
+
+        # plot the nodes
+        plt.scatter(x_values, y_values, color= "b", marker="o",s=100*2)
+        #plot the ids
+        for i in nodes:
+            plt.text(x_values[i], y_values[i], f'{nodes[i]}', ha='right', fontsize=25)  # add node id
+        # plot edges
+        for edge in arrows:
+            ax1.add_artist(edge)
+        plt.tight_layout()
+        plt.show()
 
 
 if __name__ == '__main__':

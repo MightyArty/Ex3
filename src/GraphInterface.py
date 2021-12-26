@@ -13,9 +13,9 @@ class GraphInterface:
         Returns the number of edges in this graph
         @return: The number of edges in this graph
         """
-        raise NotImplementedError
+        raise NotImeplementedError
 
-    def get_all_v(self) -> dict:
+    def get_all_v(slf) -> dict:
         """return a dictionary of all the nodes in the Graph, each node is represented using a pair
          (node_id, node_data)
         """

@@ -37,4 +37,5 @@ class TestGraphAlgo(TestCase):
 
 
     def test_plot_graph(self):
-        self.fail()
+        graph.load_from_json(file)
+        graph.plot_graph()

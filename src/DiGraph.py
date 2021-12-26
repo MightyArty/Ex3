@@ -31,6 +31,11 @@ class DiGraph(GraphInterface):
 
     def all_out_edges_of_node(self, id1: int) -> dict:
         nodes = dict()
+
+        if id1 not in self.edgesMap:
+            # in the case there are no edges going out of id1
+            return dict()
+
         nodeEdges = self.edgesMap[id1]
         for e in nodeEdges.values():
             nodes[e.dest] = e.weight
@@ -91,29 +96,31 @@ class DiGraph(GraphInterface):
                 self.mc += len(self.edgesMap.get(node_id))
                 Dict = self.edgesMap.pop(node_id)
                 for e in Dict.values():
-                    self.reversEdges.pop(e.src)
+                    self.reversEdges.pop(e.dest)
             if self.reversEdges.__contains__(node_id):
                 self.edgeSize = self.edgeSize - len((self.reversEdges.get(node_id)))
                 self.mc += len((self.reversEdges.get(node_id)))
                 Dict = self.reversEdges.pop(node_id)
                 for e in Dict.values():
-                    self.edgesMap.pop(e.dest)
+                    self.edgesMap.pop(e.src)
             self.nodesMap.pop(node_id)
             return True
         else:
             return False
 
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
-        tempMap = self.edgesMap.get(node_id1)
-        if tempMap is not None:
-            tempMap.pop(node_id2)
-            self.edgesMap[node_id1] = tempMap
-            reversedTempMap = self.reversEdges.get(node_id2)
-            reversedTempMap.pop(node_id1)
-            self.reversEdges[node_id2] = reversedTempMap
-            self.edgeSize -= 1
-            self.mc += 1
-            return True
+        if self.nodesMap.__contains__(node_id1) and self.nodesMap.__contains__(node_id2):
+            tempMap = self.edgesMap.get(node_id1)
+            if tempMap is not None:
+                if len(tempMap)!=0:
+                    tempMap.pop(node_id2)
+                    self.edgesMap[node_id1] = tempMap
+                    reversedTempMap = self.reversEdges.get(node_id2)
+                    reversedTempMap.pop(node_id1)
+                    self.reversEdges[node_id2] = reversedTempMap
+                    self.edgeSize -= 1
+                    self.mc += 1
+                return True
         else:
             return False
 

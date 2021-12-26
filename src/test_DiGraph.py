@@ -11,12 +11,15 @@ graph.add_node(2,c)
 graph.add_edge(0,1,5) # one edge 2 -- 4
 
 class TestDiGraph(TestCase):
+
+
     def test_v_size(self):
         e = graph.v_size()
         self.assertTrue(e,3)
         tempTuple = (9,9,0)
         e2 = graph.add_node(10,tempTuple)
         self.assertTrue(e2,4)
+
 
     def test_e_size(self):
         e = graph.e_size()
@@ -71,10 +74,8 @@ class TestDiGraph(TestCase):
         graph.remove_node(2)
         e = graph.v_size() #2
         self.assertNotEqual(e,before)
-        flag = graph.remove_node(1).__bool__() #not working
-        print(flag)
-
-
+        flag = graph.remove_node(1).__bool__()
+        self.assertEqual(flag,True)
 
     def test_remove_edge(self):
         before = graph.e_size() #1
@@ -83,3 +84,5 @@ class TestDiGraph(TestCase):
         self.assertNotEqual(e,before)
         flag = graph.remove_edge(99,92).__bool__()
         self.assertEqual(flag,False)
+
+
