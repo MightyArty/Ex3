@@ -4,13 +4,25 @@
 This project is a implementation to  directed weighted data structure and graph algorithms using Python Programming language. We will devide the README to 3 parts - 
 DiGraph class,GraphAlgo class and comparisons between this assignment (using Python) to the previous (using Java)
 
+# We used this algorithms in order to complete the task
+- [Graph Center](https://en.wikipedia.org/wiki/Graph_center)
+- [Travelling salesman problem](https://en.wikipedia.org/wiki/Travelling_salesman_problem)
+- [Shortest Path Problem](https://en.wikipedia.org/wiki/Shortest_path_problem)
+- [Dijkstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
+- [Floyd Warshall algorithm](https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm)
+
 # Part I - DiGraph class (implements GraphInterface):
- This class implements GraphInterface 
-MORE DATA WILL PROVIDED
+ **In this class we have the next functions :**
+ 
+ v_size, e_size, get_all_v, all_in_edges_of_node, all_out_edges_of_node, get_mc, add_edge, add_node, remove_node, remove_edge
+  
 
 # Part II - GraphAlgo class (implements GraphAlgoInterface):
-  This class implements GraphAlgoInterface
-  MORE DATA WILL PROVIDED
+  **In this class we have the next functions :**
+  
+  get_graph, load_from_json, save_to_json, shortest_path, TSP, centerPoint, plot_graph
+  
+  
   
 # Part III - Comparisons:
 In this part we compare our algorithms between our Ex2 assignment algorithms that we build in java - [CLICK HERE TO SEE THE PREVIOUS ASSIGNMENT](https://github.com/MightyArty/Ex2_Graphs)

@@ -1,6 +1,6 @@
 from Edge import Edge
 from GraphInterface import GraphInterface
-from Node import *
+from Node import Node
 
 
 class DiGraph(GraphInterface):
