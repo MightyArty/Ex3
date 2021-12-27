@@ -101,7 +101,7 @@ class GraphAlgo(GraphAlgoInterface):
             https://en.wikipedia.org/wiki/Dijkstra's_algorithm
     """
 
-    def shortest_path(self, id1: int, id2: int) -> (float, list):
+       def shortest_path(self, id1: int, id2: int) -> (float, list):
         vertexDirection = dict()
         ansArr = list()
         try:
@@ -118,17 +118,20 @@ class GraphAlgo(GraphAlgoInterface):
             for n in tempGraph.nodesMap.values():
                 tempNode = n
                 if tempNode.id != id1:
-                    tempGraph.nodesMap[tempNode.id].weight = float('inf')  # set the weight
+                    # set the weight, info and the tag
+                    tempGraph.nodesMap[tempNode.id].weight = float('inf')
                     tempGraph.nodesMap[tempNode.id].info = "Not Visited"
                     tempGraph.nodesMap[tempNode.id].tag = -1
             curr.info = "Not Visited"
             pq = [curr]
+            # starting the dijkstra algo
             while len(pq) != 0:
                 if curr.id != id2:
                     tempDict = self.graph.edgesMap[curr.id]
                 for e in tempDict.values():
                     if curr.id != e.dest:
                         sumWeight = e.weight + tempGraph.nodesMap[e.src].weight
+                        # check if this route is cost less
                         if tempGraph.nodesMap[e.dest].weight > sumWeight:
                             tempGraph.nodesMap[e.dest].weight = sumWeight
                             tempGraph.nodesMap[e.dest].tag = curr.id
@@ -141,11 +144,12 @@ class GraphAlgo(GraphAlgoInterface):
                     pq.pop(0)
                 if len(pq) != 0:
                     curr = pq[0]
-            minWeight = tempGraph.nodesMap[id2].weight
+            minWeight = tempGraph.nodesMap[id2].weight # the cheaper route value
             ansArr.append(tempGraph.nodesMap[id2].id)
             index = id2
+            # updating the cheaper route list
             while index != id1:
-                ansArr.append(vertexDirection[index].id)
+                ansArr.append(vertexDirection[index].tag)
                 index = vertexDirection[index].id
             ansArr.reverse()
             return minWeight, ansArr
@@ -185,9 +189,10 @@ class GraphAlgo(GraphAlgoInterface):
                     output.append(i)
         return output, destination
 
-    def centerPoint(self) -> (int, float):
+        def centerPoint(self) -> (int, float):
         size = len(self.graph.nodesMap)
         matrix = []
+        # creating a matrix [][]
         for i in range(size):
             a = []
             for j in range(size):
@@ -196,14 +201,14 @@ class GraphAlgo(GraphAlgoInterface):
                 else:
                     a.append(float('inf'))
             matrix.append(a)
-
+        # setting the vertexes
         for i in range(size):
             keys = self.graph.all_out_edges_of_node(i).keys()
             for j in range(size):
                 if keys.__contains__(j):
                     Edge = self.graph.edgesMap[i]
                     matrix[i][j] = Edge[j].weight
-
+        # updating the matrix according to the FW algo
         for k in range(size):
             for i in range(size):
                 for j in range(size):
@@ -212,6 +217,7 @@ class GraphAlgo(GraphAlgoInterface):
         ans = dict()
         id = -1
         maxMin = float('inf')
+        # finding the minimum from the maximum between all the rows
         for i in range(size):
             max = -1
             for j in range(size):
@@ -224,7 +230,7 @@ class GraphAlgo(GraphAlgoInterface):
                     min = max
             if maxMin > min:
                 maxMin = min
-                id = i
+                id = i  # update the id center
 
         ans[id] = maxMin
         return ans
