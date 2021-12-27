@@ -59,4 +59,7 @@ For full comparisons please follow the link to our Wiki - [CLICK HERE ](https://
 Here we can see our implementation of our algorithm using Matplotlib. The location of the nodes is their actual postion (X,Y) on the grid with the following IDS.
 The edges correlated with `all_in_edges_of_node()` function and due to that we can see the edge arrow (One way or two way)
 
+# Screenshots of PLOT function on T0 and A5
+Click below to see the images of PLOT for T0.json and A5.json
+[CLICK HERE ](https://github.com/MightyArty/Ex3/wiki/Screenshots-of-PLOT-function-on-T0-and-A5)
 
