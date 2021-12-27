@@ -60,6 +60,6 @@ Here we can see our implementation of our algorithm using Matplotlib. The locati
 The edges correlated with `all_in_edges_of_node()` function and due to that we can see the edge arrow (One way or two way)
 
 # Screenshots of PLOT function on T0 and A5
-Click below to see the images of PLOT for T0.json and A5.json
+Click below to see the images of PLOT for T0.json and A5.json -->
 [CLICK HERE ](https://github.com/MightyArty/Ex3/wiki/Screenshots-of-PLOT-function-on-T0-and-A5)
 
