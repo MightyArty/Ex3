@@ -2,7 +2,7 @@ from unittest import TestCase
 from GraphAlgo import *
 
 graph = GraphAlgo()
-file = r"/Users/david/Desktop/Ex3-new/data/A0.json"  # Enter your path here
+file = r"/Users/david/Desktop/Ex3-new/data/A5.json"  # Enter your path here
 
 
 class TestGraphAlgo(TestCase):
@@ -23,7 +23,7 @@ class TestGraphAlgo(TestCase):
     def test_shortest_path(self):
         graph.load_from_json(file)
         short = graph.shortest_path(0, 2)
-        self.assertTrue(short[1],[0,1,2])
+        self.assertTrue(short,[0,1,2])
 
     def test_tsp(self):
         graph.load_from_json(file)

@@ -101,7 +101,7 @@ class GraphAlgo(GraphAlgoInterface):
             https://en.wikipedia.org/wiki/Dijkstra's_algorithm
     """
 
-       def shortest_path(self, id1: int, id2: int) -> (float, list):
+    def shortest_path(self, id1: int, id2: int) -> (float, list):
         vertexDirection = dict()
         ansArr = list()
         try:
@@ -189,7 +189,7 @@ class GraphAlgo(GraphAlgoInterface):
                     output.append(i)
         return output, destination
 
-        def centerPoint(self) -> (int, float):
+    def centerPoint(self) -> (int, float):
         size = len(self.graph.nodesMap)
         matrix = []
         # creating a matrix [][]
