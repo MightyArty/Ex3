@@ -23,7 +23,7 @@ class TestGraphAlgo(TestCase):
     def test_shortest_path(self):
         graph.load_from_json(file)
         short = graph.shortest_path(0, 2)
-        print(short)
+        self.assertTrue(short[1],[0,1,2])
 
     def test_tsp(self):
         graph.load_from_json(file)
