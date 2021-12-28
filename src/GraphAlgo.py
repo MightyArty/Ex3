@@ -3,6 +3,9 @@ import json
 import random
 from typing import List
 
+from matplotlib import pyplot as plt
+from matplotlib.patches import ConnectionPatch
+
 from GraphAlgoInterface import GraphAlgoInterface
 from DiGraph import DiGraph
 from GraphInterface import GraphInterface
@@ -115,17 +118,20 @@ class GraphAlgo(GraphAlgoInterface):
             for n in tempGraph.nodesMap.values():
                 tempNode = n
                 if tempNode.id != id1:
-                    tempGraph.nodesMap[tempNode.id].weight = float('inf')  # set the weight
+                    # set the weight, info and the tag
+                    tempGraph.nodesMap[tempNode.id].weight = float('inf')
                     tempGraph.nodesMap[tempNode.id].info = "Not Visited"
                     tempGraph.nodesMap[tempNode.id].tag = -1
             curr.info = "Not Visited"
             pq = [curr]
+            # starting the dijkstra algo
             while len(pq) != 0:
                 if curr.id != id2:
                     tempDict = self.graph.edgesMap[curr.id]
                 for e in tempDict.values():
                     if curr.id != e.dest:
                         sumWeight = e.weight + tempGraph.nodesMap[e.src].weight
+                        # check if this route is cost less
                         if tempGraph.nodesMap[e.dest].weight > sumWeight:
                             tempGraph.nodesMap[e.dest].weight = sumWeight
                             tempGraph.nodesMap[e.dest].tag = curr.id
@@ -138,9 +144,10 @@ class GraphAlgo(GraphAlgoInterface):
                     pq.pop(0)
                 if len(pq) != 0:
                     curr = pq[0]
-            minWeight = tempGraph.nodesMap[id2].weight
+            minWeight = tempGraph.nodesMap[id2].weight  # the cheaper route value
             ansArr.append(tempGraph.nodesMap[id2].id)
             index = id2
+            # updating the cheaper route list
             while index != id1:
                 ansArr.append(vertexDirection[index].tag)
                 index = vertexDirection[index].id
@@ -156,32 +163,36 @@ class GraphAlgo(GraphAlgoInterface):
     """
 
     def TSP(self, node_lst: List[int]) -> (List[int], float):
-        if node_lst is None:
+        if (node_lst is None) or len(node_lst) < 1:
             print("The list should not be empty !")
-            return -1
+            return [], -1
 
-        output = []  # return list
-        bestDest = 0  # return destination
-        temp = copy.deepcopy(node_lst)  # copy of the given list
+        # if there are only one node in the given list
+        # just return this node
+        if len(node_lst) == 1:
+            return [node_lst, 0]
 
-        output.append(temp[0])
-        temp.remove(temp[0])
+        output = []
+        destination = 0
+        tempList = copy.deepcopy(node_lst)  # copy of the given list
 
-        while len(temp) > 0:
-            currentDest = 0
-            currentNode = 0
-            for node in temp:
-                destination, arr = self.shortest_path(output[-1], node)
-                if destination < currentDest:
-                    currentDest = destination
-                    currentNode = arr[-1]
-            bestDest = bestDest + currentDest
-            output.append(currentNode)
-        return output, bestDest
+        # go from start to the last node of the list and compare
+        # each 2 nodes [0,1],[1,2]...[n-1,n]
+        for runner in range(0, len(tempList) - 1):
+            first = tempList[runner]
+            second = tempList[runner + 1]
+            currentDist = self.shortest_path(first, second)[1]
+            destination = destination + self.shortest_path(first, second)[0]
+
+            for i in currentDist:
+                if not output.__contains__(i):
+                    output.append(i)
+        return output, destination
 
     def centerPoint(self) -> (int, float):
         size = len(self.graph.nodesMap)
         matrix = []
+        # creating a matrix [][]
         for i in range(size):
             a = []
             for j in range(size):
@@ -190,14 +201,14 @@ class GraphAlgo(GraphAlgoInterface):
                 else:
                     a.append(float('inf'))
             matrix.append(a)
-
+        # setting the vertexes
         for i in range(size):
             keys = self.graph.all_out_edges_of_node(i).keys()
             for j in range(size):
                 if keys.__contains__(j):
                     Edge = self.graph.edgesMap[i]
                     matrix[i][j] = Edge[j].weight
-
+        # updating the matrix according to the FW algo
         for k in range(size):
             for i in range(size):
                 for j in range(size):
@@ -205,33 +216,69 @@ class GraphAlgo(GraphAlgoInterface):
                         matrix[i][j] = matrix[i][k] + matrix[k][j]
         ans = dict()
         id = -1
-        maxMin = float('inf')
+        minMax = float('inf')
         for i in range(size):
             max = -1
             for j in range(size):
-                min = float('inf')
                 if matrix[i][j] > max:
                     max = matrix[i][j]
                 if max == float('inf'):
                     return float('inf')
-                elif min > max:
-                    min = max
-            if maxMin > min:
-                maxMin = min
+            if minMax > max:
                 id = i
+                minMax = max
+        return id, minMax
 
-        ans[id] = maxMin
-        return ans
 
-    """
-        Plots the graph.
-        If the nodes have a position, the nodes will be placed there.
-        Otherwise, they will be placed in a random but elegant manner.
-        @return: None
-    """
+"""
+    Plots the graph.
+    If the nodes have a position, the nodes will be placed there.
+    Otherwise, they will be placed in a random but elegant manner.
+    @return: None
+"""
 
-    def plot_graph(self) -> None:
-        pass
+
+def plot_graph(self) -> None:
+    # define dimensions of figure and axis
+
+    fig, (ax1) = plt.subplots(figsize=(15, 15))  # set image dimensions
+
+    nodes = self.graph.get_all_v()  # (node_key: int, (x,y) :tuple)
+    nodes_keys = nodes.keys()
+
+    x_values = [nodes[id].pos[0] for id in nodes_keys]
+
+    y_values = [nodes[id].pos[1] for id in nodes_keys]
+
+    # Construct a set of all class edge
+    arrows = set()
+    for v in nodes:
+        start = (nodes[v].pos[0], nodes[v].pos[1])
+        outgoing_edges = self.graph.all_out_edges_of_node(v)
+
+        for e in outgoing_edges.keys():
+            weight = outgoing_edges[e]
+            dest_id = e
+
+            end_x_value = nodes[dest_id].pos[0]
+            end_y_value = nodes[dest_id].pos[1]
+            end = (end_x_value, end_y_value)
+            coordsA = "data"
+            coordsB = "data"
+            arrows.add(
+                ConnectionPatch(start, end, coordsA, coordsB, arrowstyle="-|>", shrinkA=5, shrinkB=5, linewidth=2,
+                                color="r", mutation_scale=30))
+
+    # plot the nodes
+    plt.scatter(x_values, y_values, color="b", marker="o", s=100 * 2)
+    # plot the ids
+    for i in nodes:
+        plt.text(x_values[i], y_values[i], f'{nodes[i]}', ha='right', fontsize=25)  # add node id
+    # plot edges
+    for edge in arrows:
+        ax1.add_artist(edge)
+    plt.tight_layout()
+    plt.show()
 
 
 if __name__ == '__main__':
