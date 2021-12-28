@@ -144,7 +144,7 @@ class GraphAlgo(GraphAlgoInterface):
                     pq.pop(0)
                 if len(pq) != 0:
                     curr = pq[0]
-            minWeight = tempGraph.nodesMap[id2].weight # the cheaper route value
+            minWeight = tempGraph.nodesMap[id2].weight  # the cheaper route value
             ansArr.append(tempGraph.nodesMap[id2].id)
             index = id2
             # updating the cheaper route list
@@ -214,26 +214,21 @@ class GraphAlgo(GraphAlgoInterface):
                 for j in range(size):
                     if matrix[i][j] > matrix[i][k] + matrix[k][j]:
                         matrix[i][j] = matrix[i][k] + matrix[k][j]
-        ans = dict()
+
         id = -1
-        maxMin = float('inf')
+        minMax = float('inf')
         # finding the minimum from the maximum between all the rows
         for i in range(size):
             max = -1
             for j in range(size):
-                min = float('inf')
                 if matrix[i][j] > max:
                     max = matrix[i][j]
                 if max == float('inf'):
                     return float('inf')
-                elif min > max:
-                    min = max
-            if maxMin > min:
-                maxMin = min
-                id = i  # update the id center
-
-        ans[id] = maxMin
-        return ans
+            if minMax > max:
+                id = i  # updates the center ID
+                minMax = max  # updates center's weight
+        return id, minMax
 
     """
         Plots the graph.
@@ -247,12 +242,16 @@ class GraphAlgo(GraphAlgoInterface):
 
         fig, (ax1) = plt.subplots(figsize=(15, 15))  # set image dimensions
 
-        nodes = self.graph.get_all_v()# (node_key: int, (x,y) :tuple)
+        nodes = self.graph.get_all_v()  # (node_key: int, (x,y,z) :tuple)
         nodes_keys = nodes.keys()
+        for i in nodes.values():
+            if i.pos is None:
+                i.pos = (random.random() * 15, random.random() * 15, 0.0)
 
-        x_values = [nodes[id].pos[0] for id in nodes_keys]
+        else:
 
-        y_values = [nodes[id].pos[1] for id in nodes_keys]
+            x_values = [nodes[id].pos[0] for id in nodes_keys]
+            y_values = [nodes[id].pos[1] for id in nodes_keys]
 
         # Construct a set of all class edge
         arrows = set()
@@ -269,11 +268,13 @@ class GraphAlgo(GraphAlgoInterface):
                 end = (end_x_value, end_y_value)
                 coordsA = "data"
                 coordsB = "data"
-                arrows.add(ConnectionPatch(start, end, coordsA, coordsB, arrowstyle = "-|>", shrinkA = 5, shrinkB = 5,linewidth=2,color="r",mutation_scale=30))
+                arrows.add(
+                    ConnectionPatch(start, end, coordsA, coordsB, arrowstyle="-|>", shrinkA=5, shrinkB=5, linewidth=2,
+                                    color="r", mutation_scale=30))
 
         # plot the nodes
-        plt.scatter(x_values, y_values, color= "b", marker="o",s=100*2)
-        #plot the ids
+        plt.scatter(x_values, y_values, color="b", marker="o", s=100 * 2)
+        # plot the ids
         for i in nodes:
             plt.text(x_values[i], y_values[i], f'{nodes[i]}', ha='right', fontsize=25)  # add node id
         # plot edges
@@ -283,8 +284,4 @@ class GraphAlgo(GraphAlgoInterface):
         plt.show()
 
 
-if __name__ == '__main__':
-    g = GraphAlgo()
-    file = '/Users/valhalla/PycharmProjects/Ex3/data/A1.json'
-    g.load_from_json(file)
-    g.save_to_json("outputTEST.json")
+

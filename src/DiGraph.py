@@ -82,7 +82,7 @@ class DiGraph(GraphInterface):
 
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
         node = Node(node_id, pos)
-        #check if the vertex is elready exsist
+        # check if the vertex is elready exsist
         if not self.nodesMap.__contains__(node_id):
             self.nodesMap[node_id] = node
             self.mc += 1
@@ -92,12 +92,12 @@ class DiGraph(GraphInterface):
             return False
 
     def remove_node(self, node_id: int) -> bool:
-        #check if the vertex even exsist
+        # check if the vertex even exsist
         if self.nodesMap.__contains__(node_id):
             # self.nodesMap.pop(node_id)
             self.mc += 1
             self.vertexSize -= 1
-            #check if there any edges that connect to this vertex
+            # check if there any edges that connect to this vertex
             if self.edgesMap.__contains__(node_id):
                 self.edgeSize = self.edgeSize - len(self.edgesMap.get(node_id))
                 self.mc += len(self.edgesMap.get(node_id))
@@ -116,12 +116,12 @@ class DiGraph(GraphInterface):
             return False
 
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
-        #check if the vertexes are exists
+        # check if the vertexes are exists
         if self.nodesMap.__contains__(node_id1) and self.nodesMap.__contains__(node_id2):
             tempMap = self.edgesMap.get(node_id1)
-            #check if the edge is even exists 
+            # check if the edge is even exists
             if tempMap is not None:
-                if len(tempMap)!=0:
+                if len(tempMap) != 0:
                     tempMap.pop(node_id2)
                     self.edgesMap[node_id1] = tempMap
                     reversedTempMap = self.reversEdges.get(node_id2)

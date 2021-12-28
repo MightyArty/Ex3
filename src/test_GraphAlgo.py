@@ -22,18 +22,19 @@ class TestGraphAlgo(TestCase):
 
     def test_shortest_path(self):
         graph.load_from_json(file)
-        short = graph.shortest_path(0, 2)
-        self.assertTrue(short,[0,1,2])
+        short = graph.shortest_path(0, 5)
+        self.assertEqual(short[1],[0, 0, 2, 3, 5])
 
     def test_tsp(self):
         graph.load_from_json(file)
         test = graph.TSP([1, 3, 7])
-        self.assertTrue(test[0], [1, 2, 3, 6, 7])
+        self.assertEqual(test[0], [0, 1, 9, 3, 2, 13, 7])
 
     def test_center_point(self):
         graph.load_from_json(file)
-        e = graph.centerPoint()
-        self.assertTrue(e, 6.806805834715163)
+        center = graph.centerPoint()
+        self.assertEqual(9.291743173960954, center[1])
+        self.assertEqual(40,center[0])
 
     def test_plot_graph(self):
         graph.load_from_json(file)

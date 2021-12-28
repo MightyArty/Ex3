@@ -13,34 +13,37 @@ graph.add_edge(0, 1, 5)  # one edge 2 -- 4
 
 class TestDiGraph(TestCase):
     def test_v_size(self):
-        e = graph.v_size()
-        self.assertTrue(e, 3)
+        a = graph.v_size()
+        self.assertEqual(2,a)
         tempTuple = (9, 9, 0)
-        e2 = graph.add_node(10, tempTuple)
-        self.assertTrue(e2, 4)
+        graph.add_node(10, tempTuple)
+        a2 = graph.v_size()
+        self.assertEqual(3,a2)
 
     def test_e_size(self):
-        e = graph.e_size()
-        self.assertTrue(e, 1)
+        a = graph.e_size()
+        self.assertEqual(2,a)
+        graph.add_edge(2,1,0)
+        a2 = graph.e_size()
+        self.assertEqual(a2,3)
 
     def test_get_all_v(self):
-        e = graph.get_all_v()
-        self.assertTrue(e, graph.nodesMap)
+        a = graph.get_all_v()
+        self.assertEqual(graph.nodesMap, a)
 
     def test_all_in_edges_of_node(self):
-        e = graph.all_in_edges_of_node(1)
-        self.assertTrue(e, 1)
+        a = graph.all_in_edges_of_node(1)
+        self.assertEqual({0: 5},a)
 
     def test_all_out_edges_of_node(self):
-        e = graph.all_out_edges_of_node(0)
-        self.assertTrue(e, 1)
+        a = graph.all_out_edges_of_node(0)
+        self.assertEqual({1: 5},a)
 
     def test_get_mc(self):
-        e = graph.get_mc()
-        self.assertTrue(e, 4)
-        graph.remove_edge(0, 1)
-        e2 = graph.get_mc()
-        self.assertTrue(e2, 5)
+        a = graph.get_mc()
+        self.assertEqual(a, 7)
+
+
 
     def test_add_edge(self):
         before = graph.e_size()

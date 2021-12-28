@@ -88,7 +88,11 @@ def check3():
     """ This function tests the naming, basic testing over A5 json file.
       :return:
       """
+
     g = DiGraph()  # creates an empty directed graph
+    g_algo = GraphAlgo()
+    file = '../data/A5.json'
+    g_algo.load_from_json(file)
     for n in range(5):
         g.add_node(n)
     g.add_edge(0, 1, 1)
@@ -99,17 +103,13 @@ def check3():
     g.add_edge(2, 3, 1.1)
     g.add_edge(3, 4, 2.1)
     g.add_edge(4, 2, 0.5)
-    g_algo = GraphAlgo(g)
     print(g_algo.centerPoint())
     print(g_algo.TSP([1, 2, 4]))
+    g_algo.save_to_json(file + '_saved')
     g_algo.plot_graph()
 
-#     g_algo.plot_graph()
 
 
-if __name__ == '__main__':
-    check0()  # V
-    # check1()  # V
 
-    # check2()  # V
-    # check() # V
+
+
