@@ -214,7 +214,6 @@ class GraphAlgo(GraphAlgoInterface):
                 for j in range(size):
                     if matrix[i][j] > matrix[i][k] + matrix[k][j]:
                         matrix[i][j] = matrix[i][k] + matrix[k][j]
-        ans = dict()
         id = -1
         minMax = float('inf')
         for i in range(size):
