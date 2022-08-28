@@ -1,42 +1,40 @@
 from unittest import TestCase
-from GraphAlgo import *
+from src.GraphAlgo import *
+import os
 
-algo = GraphAlgo()
-file = r"C:\Users\97252\Ex3\data\A5.json"  # Enter your path here
+graph = GraphAlgo()
+file = r"/Users/valhalla/PycharmProjects/Ex3/data/A0.json"
 
 
 class TestGraphAlgo(TestCase):
     def test_get_graph(self):
-        e = algo.graph
-        self.assertTrue(e, algo.get_graph())
+        e = graph.graph
+        self.assertTrue(e, graph.get_graph())
 
     def test_load_from_json(self):
-        e = algo.load_from_json(file)
-        actual = algo.get_graph()
+        e = graph.load_from_json(file)
+        actual = graph.get_graph()
         self.assertTrue(e, actual)
 
     def test_save_to_json(self):
-        e = algo.load_from_json(file)
-        save = algo.save_to_json("testUnit.json")  # name of the output file
+        e = graph.load_from_json(file)
+        save = graph.save_to_json("testUnit.json")
         self.assertTrue(e, save)
 
     def test_shortest_path(self):
-        algo.load_from_json(file)
-        short = algo.shortest_path(0, 2)
-        self.assertTrue(short, [0, 1, 2])
-        short2 = algo.shortest_path(0, 3)
-        self.assertTrue(short2, [0, 1, 2, 3])
+        graph.load_from_json(file)
+        short = graph.shortest_path(0, 2)
+        print(short)
 
     def test_tsp(self):
-        algo.load_from_json(file)
-        test = algo.TSP([1, 3, 7])
-        self.assertTrue(test[0], [1, 2, 3, 6, 7])
+        graph.load_from_json(file)
+        test = graph.TSP([3, 5, 7])
+        print(test)
 
     def test_center_point(self):
-        algo.load_from_json(file)
-        print(algo.centerPoint())
+        graph.load_from_json(file)
+        center = graph.centerPoint()
+        self.assertTrue(center, 6.806805834715163)
 
-
-    def test_plot_graph(self):
-        algo.load_from_json(file)
-        algo.plot_graph()
+    # def test_plot_graph(self):
+    #     self.fail()
